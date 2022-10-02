@@ -101,6 +101,16 @@ FullCenterY := FullMonitorY + FullMonitorHeight / 2
 FullEdgeForgivenessX := FullMonitorX - EdgeForgiveness
 FullEdgeForgivenessY := FullMonitorY - EdgeForgiveness
 
+; specifically for tiktok... this is no longer used and needs to be removed
+TokMonitorX := 0
+TokMonitorY := 0 - 500
+TokMonitorWidth := ScreenWidth
+TokMonitorHeight := 2 * ScreenHeight
+TokCenterX := TokMonitorX + TokMonitorWidth / 2
+TokCenterY := TokMonitorY + TokMonitorHeight / 2
+TokEdgeForgivenessX := TokMonitorX - EdgeForgiveness
+TokEdgeForgivenessY := TokMonitorY - EdgeForgiveness
+
 GetAllWindowIds()
 {
     AllWindowIds := []
@@ -151,12 +161,12 @@ GetWindowIdsInMonitor(AllWindowIds, MonitorX, MonitorY, MonitorWidth, MonitorHei
 
 MouseToActiveWindow()
 {
-    WinGetPos, , , W, H, A
+    WinGetPos, , , Width_Win, Height_Win, A
     ; for some reason you put the values relative
     ; to the corner of the window... maybe?
     ; not actually sure why this isn't "X + Width / 2"
-    CenterX := W / 2
-    CenterY := H / 2
+    CenterX := Width_Win / 2
+    CenterY := Height_Win / 2
     MouseMove, CenterX, CenterY, 0
     return
 }
@@ -337,6 +347,14 @@ MoveTo(Monitor)
         MonitorY := FullMonitorY
         MonitorWidth := FullMonitorWidth
         MonitorHeight := FullMonitorHeight
+
+        case "Tok":
+        global TokMonitorX, TokMonitorY, TokMonitorWidth, TokMonitorHeight
+        MonitorX := TokMonitorX
+        MonitorY := TokMonitorY
+        MonitorWidth := TokMonitorWidth
+        MonitorHeight := TokMonitorHeight
+
     }
     WinMove, A, , MonitorX, MonitorY, MonitorWidth, MonitorHeight
 }

@@ -6,15 +6,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, Force ; skips the startup (on re-run) dialog box and replaces the old instance automatically
 
 
-; didn't have comments for these things, so I don't know why they're here, so I commented them out
-; #InstallKeybdHook
-
-; #HotkeyInterval 5000
-; #MaxHotkeysPerInterval 500
-
-; SetTitleMatchMode, 2
-
-
 ; makes sure the script is being run as admin
 ; If not A_IsAdmin
 ; {
@@ -31,37 +22,56 @@ KeepWinZRunning := true
 #Include window-manager.ahk
 
 
-; let me relax without teams going idle
-#MaxThreadsPerHotkey 3
-#z::  
-#MaxThreadsPerHotkey 1
-if KeepWinZRunning  
-{
-    KeepWinZRunning := false  
-    return  
-} else
-{
-    KeepWinZRunning := true
-}
-Loop
-{
-    Sleep 1000
-    Send {F19}
-    Sleep 1000
-    Send {F19}
-    if not KeepWinZRunning  
-        break  
-}
-KeepWinZRunning := false   
-return
+; ; let me relax without teams going idle
+; #MaxThreadsPerHotkey 3
+; #z::  
+; #MaxThreadsPerHotkey 1
+; if KeepWinZRunning  
+; {
+;     KeepWinZRunning := false  
+;     return  
+; } else
+; {
+;     KeepWinZRunning := true
+; }
+; Loop
+; {
+;     Sleep 1000
+;     Send {F19}
+;     Sleep 1000
+;     Send {F19}
+;     if not KeepWinZRunning  
+;         break  
+; }
+; KeepWinZRunning := false   
+; return
 
 
-#F9::
-RunWait, %comspec% /c "C:\cygwin64\bin\mintty.exe -o FormatOtherKeys=1 -o FontSize=24 wsl -d Ubuntu --user nathanvercaemert emacs --no-desktop -nw"
-Return
-
-#F10::
-RunWait, %comspec% /c "C:\cygwin64\bin\mintty.exe -o FormatOtherKeys=1 -o FontSize=24 wsl -d Ubuntu --user nathanvercaemert emacsclient"
+; toggle image dimmer
+!q::
+WinGetPos, X, Y, W, H, A
+; multiple times to make sure the mouse actually gets there
+; MouseMove, W - 162, 63, 0
+; MouseMove, W - 162, 63, 0
+; MouseMove, W - 162, 63, 0
+; MouseMove, W - 162, 63, 0
+MouseMove, W - 137, 63, 0
+MouseMove, W - 137, 63, 0
+MouseMove, W - 137, 63, 0
+MouseMove, W - 137, 63, 0
+MouseClick,, W - 137, 63,, 0
+Sleep, 200
+MouseMove, 70, 220, 0
+MouseClick,, 70, 220,, 0
+Sleep, 400
+MouseMove, 240, 105, 0
+MouseClick,, 240, 105,, 0
+Sleep, 50
+MouseClick,, 240, 105,, 0
+Sleep, 500
+Send {Esc}
+Sleep, 400
+MouseMove, 0, 0, 0
 Return
 
 
@@ -109,9 +119,9 @@ Return
 Activate("UpCenter")
 Return
 
-; ^!#X::
-; Activate("Reading")
-; Return
+^!#8::
+Activate("Reading")
+Return
 
 ^!#F::
 MoveTo("Middle")
@@ -153,7 +163,7 @@ Return
 MoveTo("Full")
 Return
 
-#+q::
+^!#9::
 MoveTo("Reading")
 Return
 
@@ -259,23 +269,43 @@ WinGet, processId, PID, ahk_id %notepadId%
 Process, close, %processId%
 Return
 
-#IfWinActive ahk_class ApplicationFrameWindow
-
-PgUp::
-MouseToActiveWindow()
-Loop 7 {
-    Click, WheelUp
-}
+; pasting into alacritty
+; clean up the clipboard to remove windows line endings
+; this is a hack to fix the issue where pasting into alacritty
+; (using the alacritty paste functionality bound to MEH(PgDn) (bound to lmd+rpu))
+; causes windows line endings to be represented as two line feeds
+^+!PgDn::
+ClipboardBackup := Clipboard                        ; To restore clipboard contents after paste
+FixString := StrReplace(Clipboard, "`r")            ; Change endings
+Clipboard := FixString                              ; Set to clipboard
+Send ^+!{PgDn}                                      ; Paste text
+sleep 10                                            ; sleeping because if I replace to fast
+                                                    ; then the wrong thing gets pasted
+Clipboard := ClipboardBackup                        ; Restore clipboard that has windows endings
 Return
 
-PgDn::
-MouseToActiveWindow()
-Loop 7 {
-    Click, WheelDown
-}
-Return
+; #IfWinActive ahk_class ApplicationFrameWindow
 
-#If
+; PgUp::
+; MouseToActiveWindow()
+; Loop 3 {
+;     Send Up
+; }
+; Return
+
+; PgDn::
+
+; #If A_PriorHotkey = "F5"
+
+; w::
+; Send Down
+; Return
+
+; v::
+; Send Up
+; Return
+
+; #If
 
 #IfWinActive ahk_class Window Class
 
@@ -288,6 +318,14 @@ Return
 !Enter::
 Send !^m
 Return
+
+; ; pop new frame
+; #If A_PriorHotkey = "^x"
+
+; :*b0:52::
+; Send  {Blind}
+; Run %ComSpec% "alacritty --config-file C:\Users\nverc\AppData\Roaming\alacritty\alacritty.yml -e wsl -d Ubuntu --user vercaemert emacsclient -nw"
+; Return
 
 #If
 
@@ -352,14 +390,46 @@ Return
 Send +{Left}
 Return
 
-; Vimium scroll up a bit
 PgUp::
+If WinActive("ahk_class ApplicationFrameWindow") ; scroll up a bit in xodo
+{
+    Loop 6 {
+        Send {Up}
+        Sleep 40
+    }
+    Return
+}
+If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
+{
+    Loop 33 {
+        Send {Up}
+        Sleep 40
+    }
+    Return
+}
+; in Vimium
 Send ^q
 Send e
 Return
 
-; Vimium scroll down a bit
 PgDn::
+If WinActive("ahk_class ApplicationFrameWindow") ; scroll down a bit in xodo
+{
+    Loop 6 {
+        Send {Down}
+        Sleep 40
+    }
+    Return
+}
+If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
+{
+    Loop 33 {
+        Send {Down}
+        Sleep 40
+    }
+    Return
+}
+; in Vimium
 Send ^q
 Send f
 Return
@@ -386,11 +456,35 @@ Send a
 Return
 
 w::
+If WinActive("ahk_class ApplicationFrameWindow")
+{
+    Send {Down}
+    Return
+}
+If WinActive("ahk_class AcrobatSDIWindow")
+{
+    Loop 3 {
+        Send {Down}
+    }
+    Return
+}
 Send ^q
 Send c
 Return
 
 v::
+If WinActive("ahk_class ApplicationFrameWindow")
+{
+    Send {Up}
+    Return
+}
+If WinActive("ahk_class AcrobatSDIWindow")
+{
+    Loop 3 {
+        Send {Up}
+    }
+    Return
+}
 Send ^q
 Send d
 Return
