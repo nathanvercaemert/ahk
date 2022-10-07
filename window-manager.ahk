@@ -436,31 +436,3 @@ SwapWith(Monitor)
         Activate("Reading")
     }
 }
-
-; resize frames
-
-^!#A::
-WinGetPos, X, Y, Width, Height, A
-HalfHeight := Height / 2
-WinMove, A, , X, Y, Width, HalfHeight
-return
-
-^!#B::
-WinGetPos, X, Y, Width, Height, A
-HalfWidth := Width / 2
-WinMove, A, , X, Y, HalfWidth, Height
-return
-
-^!#C::
-WinGetPos, X, Y, Width, Height, A
-HalfHeight := Height / 2
-NewY := Y + HalfHeight
-WinMove, A, , X, NewY, Width, HalfHeight
-return
-
-^!#D::
-WinGetPos, X, Y, Width, Height, A
-HalfWidth := Width / 2
-NewX := X + HalfWidth
-WinMove, A, , NewX, Y, HalfWidth, Height
-return

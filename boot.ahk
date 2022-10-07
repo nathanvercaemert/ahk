@@ -13,15 +13,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; ExitApp
 ; }
 
-
-KeepWinZRunning := true
-
-
-; window management
-
 #Include window-manager.ahk
 
-
+KeepWinZRunning := true
 ; ; let me relax without teams going idle
 ; #MaxThreadsPerHotkey 3
 ; #z::  
@@ -75,6 +69,9 @@ MouseMove, 0, 0, 0
 Return
 
 
+; window management
+
+; maximize active window
 #Up::
 WinMaximize, A, , ,
 Return
@@ -82,6 +79,38 @@ Return
 ^!#I::
 MouseToActiveWindow()
 Return
+
+; resize frames
+
+; top half
+^!#A::
+WinGetPos, X, Y, Width, Height, A
+HalfHeight := Height / 2
+WinMove, A, , X, Y, Width, HalfHeight
+return
+
+; left half
+^!#B::
+WinGetPos, X, Y, Width, Height, A
+HalfWidth := Width / 2
+WinMove, A, , X, Y, HalfWidth, Height
+return
+
+; bottom half
+^!#C::
+WinGetPos, X, Y, Width, Height, A
+HalfHeight := Height / 2
+NewY := Y + HalfHeight
+WinMove, A, , X, NewY, Width, HalfHeight
+return
+
+; right half
+^!#D::
+WinGetPos, X, Y, Width, Height, A
+HalfWidth := Width / 2
+NewX := X + HalfWidth
+WinMove, A, , NewX, Y, HalfWidth, Height
+return
 
 ^!#G::
 Activate("Middle")
