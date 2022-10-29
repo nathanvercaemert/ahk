@@ -168,6 +168,13 @@ MouseToActiveWindow()
     CenterX := Width_Win / 2
     CenterY := Height_Win / 2
     MouseMove, CenterX, CenterY, 0
+    MouseMove, CenterX, CenterY, 0
+    Sleep 10
+    MouseMove, CenterX, CenterY, 0
+    MouseMove, CenterX, CenterY, 0
+    Sleep 10
+    MouseMove, CenterX, CenterY, 0
+    MouseMove, CenterX, CenterY, 0
     return
 }
 

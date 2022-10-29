@@ -2,21 +2,12 @@
 #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
 #SingleInstance, Force ; skips the startup (on re-run) dialog box and replaces the old instance automatically
-
-
-; makes sure the script is being run as admin
-; If not A_IsAdmin
-; {
-; Run *RunAs "boot.ahk"
-; ExitApp
-; }
-
 #Include window-manager.ahk
 
-KeepWinZRunning := true
+
 ; ; let me relax without teams going idle
+; KeepWinZRunning := true
 ; #MaxThreadsPerHotkey 3
 ; #z::  
 ; #MaxThreadsPerHotkey 1
@@ -41,32 +32,17 @@ KeepWinZRunning := true
 ; return
 
 
-; toggle image dimmer
-!q::
-WinGetPos, X, Y, W, H, A
-; multiple times to make sure the mouse actually gets there
-; MouseMove, W - 162, 63, 0
-; MouseMove, W - 162, 63, 0
-; MouseMove, W - 162, 63, 0
-; MouseMove, W - 162, 63, 0
-MouseMove, W - 137, 63, 0
-MouseMove, W - 137, 63, 0
-MouseMove, W - 137, 63, 0
-MouseMove, W - 137, 63, 0
-MouseClick,, W - 137, 63,, 0
-Sleep, 200
-MouseMove, 70, 220, 0
-MouseClick,, 70, 220,, 0
-Sleep, 400
-MouseMove, 240, 105, 0
-MouseClick,, 240, 105,, 0
-Sleep, 50
-MouseClick,, 240, 105,, 0
-Sleep, 500
-Send {Esc}
-Sleep, 400
-MouseMove, 0, 0, 0
+; ahk prefix
+F19::
 Return
+#If A_PriorHotkey = "F19"
+
+; basic emacs alacritty run command (Win+r)
+a::
+Send "alacritty --config-file C:\\Users\\nverc\\AppData\\Roaming\\alacritty\\alacritty.yml -e wsl -d Ubuntu --user vercaemert emacsclient -nw"
+Return
+
+#If
 
 
 ; window management
@@ -238,23 +214,13 @@ Return
 
 
 ; these make the hyper key do nothing
+
 #^!Shift::
 #^+Alt::
 #!+Ctrl::
 ^!+LWin::
 ^!+RWin:: 
 Send {Blind}{vk07}
-Return
-
-
-; how to run a program
-; Run, C:\Windows\system32\notepad.exe "C:\Users\natha\OneDrive\Desktop\file name.txt"
-; Return
-
-#y::
-; LWin gets stuck if I don't send {Blind}
-Send  {Blind}
-Run, C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe "wsl -d Ubuntu --user nathanvercaemert emacsclient -nw"
 Return
 
 
@@ -272,6 +238,8 @@ Return
 #u::
 Return
 
+
+; sticky notes
 
 ; a new reasonably sized text note in a reasonable place
 ^+!#t::
@@ -298,6 +266,7 @@ WinGet, processId, PID, ahk_id %notepadId%
 Process, close, %processId%
 Return
 
+
 ; pasting into alacritty
 ; clean up the clipboard to remove windows line endings
 ; this is a hack to fix the issue where pasting into alacritty
@@ -313,28 +282,6 @@ sleep 10                                            ; sleeping because if I repl
 Clipboard := ClipboardBackup                        ; Restore clipboard that has windows endings
 Return
 
-; #IfWinActive ahk_class ApplicationFrameWindow
-
-; PgUp::
-; MouseToActiveWindow()
-; Loop 3 {
-;     Send Up
-; }
-; Return
-
-; PgDn::
-
-; #If A_PriorHotkey = "F5"
-
-; w::
-; Send Down
-; Return
-
-; v::
-; Send Up
-; Return
-
-; #If
 
 #IfWinActive ahk_class Window Class
 
@@ -348,20 +295,8 @@ Return
 Send !^m
 Return
 
-; ; pop new frame
-; #If A_PriorHotkey = "^x"
-
-; :*b0:52::
-; Send  {Blind}
-; Run %ComSpec% "alacritty --config-file C:\Users\nverc\AppData\Roaming\alacritty\alacritty.yml -e wsl -d Ubuntu --user vercaemert emacsclient -nw"
-; Return
-
 #If
 
-; #IfWinNotActive ahk_class Emacs
-; #IfWinNotActive ahk_class CASCADIA_HOSTING_WINDOW_CLASS
-; #IfWinNotActive ahk_class mintty
-; #IfWinNotActive ahk_class moba/x X rl
 #IfWinNotActive ahk_class Window Class
 
 ; cut
@@ -420,7 +355,7 @@ Send +{Left}
 Return
 
 PgUp::
-If WinActive("ahk_class ApplicationFrameWindow") ; scroll up a bit in xodo
+If WinActive("ahk_class ApplicationFrameWindow") ; scroll up a bit (half page) in xodo
 {
     Loop 6 {
         Send {Up}
@@ -442,7 +377,7 @@ Send e
 Return
 
 PgDn::
-If WinActive("ahk_class ApplicationFrameWindow") ; scroll down a bit in xodo
+If WinActive("ahk_class ApplicationFrameWindow") ; scroll down a bit (half page) in xodo
 {
     Loop 6 {
         Send {Down}
@@ -458,8 +393,7 @@ If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
     }
     Return
 }
-; in Vimium
-Send ^q
+Send ^q ; in vimium
 Send f
 Return
 
@@ -485,36 +419,36 @@ Send a
 Return
 
 w::
-If WinActive("ahk_class ApplicationFrameWindow")
+If WinActive("ahk_class ApplicationFrameWindow") ; scroll down "1" in xodo
 {
     Send {Down}
     Return
 }
-If WinActive("ahk_class AcrobatSDIWindow")
+If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
 {
     Loop 3 {
         Send {Down}
     }
     Return
 }
-Send ^q
+Send ^q ; in vimium
 Send c
 Return
 
 v::
-If WinActive("ahk_class ApplicationFrameWindow")
+If WinActive("ahk_class ApplicationFrameWindow") ; scroll up "1" in xodo
 {
     Send {Up}
     Return
 }
-If WinActive("ahk_class AcrobatSDIWindow")
+If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
 {
     Loop 3 {
         Send {Up}
     }
     Return
 }
-Send ^q
+Send ^q ; in vimium
 Send d
 Return
 
@@ -528,12 +462,8 @@ Send b
 Return
 
 #If
-; #IfWinNotActive ahk_class Emacs
-; #IfWinNotActive ahk_class CASCADIA_HOSTING_WINDOW_CLASS
-; #IfWinNotActive ahk_class mintty
-; #IfWinNotActive ahk_class moba/x X rl
-#IfWinNotActive ahk_class Window Class
 
+#IfWinNotActive ahk_class Window Class
 
 ^x::
 Return
@@ -557,14 +487,8 @@ Send ^s
 Return
 
 #If
-; #IfWinNotActive ahk_class Emacs
-; #IfWinNotActive ahk_class CASCADIA_HOSTING_WINDOW_CLASS
-; #IfWinNotActive ahk_class mintty
-; #IfWinNotActive ahk_class moba/x X rl
+
 #IfWinNotActive ahk_class Window Class
-
-
-; put #If A_PriorHotkey = "^c" here (because of the reference to ^c in A_PriorHotkey = "^x")
 
 ; search
 ^s::
