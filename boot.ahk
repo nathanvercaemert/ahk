@@ -139,10 +139,6 @@ Return
 Activate("UpCenter")
 Return
 
-^!#8::
-Activate("Reading")
-Return
-
 ^!#F::
 MoveTo("Middle")
 Return
@@ -177,14 +173,6 @@ Return
 
 ^!#Y::
 MoveTo("UpCenter")
-Return
-
-^!#7::
-MoveTo("Full")
-Return
-
-^!#9::
-MoveTo("Reading")
 Return
 
 ^!#J::
@@ -222,10 +210,6 @@ Return
 ^!#6::
 SwapWith("UpCenter")
 Return
-
-; ::
-; SwapWith("Reading")
-; Return
 
 
 ; these make the hyper key do nothing

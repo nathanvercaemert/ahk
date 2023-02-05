@@ -20,14 +20,14 @@ MiddleCenterY := MiddleMonitorY + MiddleMonitorHeight / 2
 EdgeForgivenessX := MiddleMonitorX - EdgeForgiveness
 EdgeForgivenessY := MiddleMonitorY - EdgeForgiveness
 
-FarRightMonitorX := ScreenWidth + ScreenWidth
-FarRightMonitorY := 0
-FarRightMonitorWidth := 2560
-FarRightMonitorHeight := 1600
-FarRightCenterX := FarRightMonitorX + FarRightMonitorWidth / 2
-FarRightCenterY := FarRightMonitorY + FarRightMonitorHeight / 2
-FarRightEdgeForgivenessX := FarRightMonitorX - EdgeForgiveness
-FarRightEdgeForgivenessY := FarRightMonitorY - EdgeForgiveness
+BottomRightMonitorX := ScreenWidth + ScreenWidth
+BottomRightMonitorY := 0
+BottomRightMonitorWidth := 2560
+BottomRightMonitorHeight := 1600
+BottomRightCenterX := BottomRightMonitorX + BottomRightMonitorWidth / 2
+BottomRightCenterY := BottomRightMonitorY + BottomRightMonitorHeight / 2
+BottomRightEdgeForgivenessX := BottomRightMonitorX - EdgeForgiveness
+BottomRightEdgeForgivenessY := BottomRightMonitorY - EdgeForgiveness
 
 LeftMonitorX := 0 - ScreenHeight
 LeftMonitorY := 0
@@ -38,14 +38,14 @@ LeftCenterY := LeftMonitorY + LeftMonitorHeight / 2
 LeftEdgeForgivenessX := LeftMonitorX - EdgeForgiveness
 LeftEdgeForgivenessY := LeftMonitorY - EdgeForgiveness
 
-FarLeftMonitorX := 0 - ScreenHeight * 2
-FarLeftMonitorY := 0
-FarLeftMonitorWidth := ScreenHeight
-FarLeftMonitorHeight := ScreenWidth
-FarLeftCenterX := FarLeftMonitorX + FarLeftMonitorWidth / 2
-FarLeftCenterY := FarLeftMonitorY + FarLeftMonitorHeight / 2
-FarLeftEdgeForgivenessX := FarLeftMonitorX - EdgeForgiveness
-FarLeftEdgeForgivenessY := FarLeftMonitorY - EdgeForgiveness
+BottomLeftMonitorX := 0 - ScreenHeight * 2
+BottomLeftMonitorY := 0
+BottomLeftMonitorWidth := ScreenHeight
+BottomLeftMonitorHeight := ScreenWidth
+BottomLeftCenterX := BottomLeftMonitorX + BottomLeftMonitorWidth / 2
+BottomLeftCenterY := BottomLeftMonitorY + BottomLeftMonitorHeight / 2
+BottomLeftEdgeForgivenessX := BottomLeftMonitorX - EdgeForgiveness
+BottomLeftEdgeForgivenessY := BottomLeftMonitorY - EdgeForgiveness
 
 BottomMonitorX := 0
 BottomMonitorY := ScreenHeight
@@ -82,34 +82,6 @@ UpCenterCenterX := UpCenterMonitorX + UpCenterMonitorWidth / 2
 UpCenterCenterY := UpCenterMonitorY + UpCenterMonitorHeight / 2
 UpCenterEdgeForgivenessX := UpCenterMonitorX - EdgeForgiveness
 UpCenterEdgeForgivenessY := UpCenterMonitorY - EdgeForgiveness
-
-ReadingMonitorX := 0
-ReadingMonitorY := 0 - ScreenHeight
-ReadingMonitorWidth := ScreenWidth
-ReadingMonitorHeight := 3 * ScreenHeight
-ReadingCenterX := ReadingMonitorX + ReadingMonitorWidth / 2
-ReadingCenterY := ReadingMonitorY + ReadingMonitorHeight / 2
-ReadingEdgeForgivenessX := ReadingMonitorX - EdgeForgiveness
-ReadingEdgeForgivenessY := ReadingMonitorY - EdgeForgiveness
-
-FullMonitorX := 0 - ScreenWidth
-FullMonitorY := 0 - ScreenHeight
-FullMonitorWidth := 3 * ScreenWidth
-FullMonitorHeight := ScreenHeight + ScreenWidth
-FullCenterX := FullMonitorX + FullMonitorWidth / 2
-FullCenterY := FullMonitorY + FullMonitorHeight / 2
-FullEdgeForgivenessX := FullMonitorX - EdgeForgiveness
-FullEdgeForgivenessY := FullMonitorY - EdgeForgiveness
-
-; specifically for tiktok... this is no longer used and needs to be removed
-TokMonitorX := 0
-TokMonitorY := 0 - 500
-TokMonitorWidth := ScreenWidth
-TokMonitorHeight := 2 * ScreenHeight
-TokCenterX := TokMonitorX + TokMonitorWidth / 2
-TokCenterY := TokMonitorY + TokMonitorHeight / 2
-TokEdgeForgivenessX := TokMonitorX - EdgeForgiveness
-TokEdgeForgivenessY := TokMonitorY - EdgeForgiveness
 
 GetAllWindowIds()
 {
@@ -201,12 +173,12 @@ Activate(Monitor)
         MonitorWidth := RightMonitorWidth
         MonitorHeight := RightMonitorHeight
 
-        case "FarRight":
-        global FarRightEdgeForgivenessX, FarRightEdgeForgivenessY, FarRightMonitorWidth, FarRightMonitorHeight
-        MonitorX := FarRightEdgeForgivenessX
-        MonitorY := FarRightEdgeForgivenessY
-        MonitorWidth := FarRightMonitorWidth
-        MonitorHeight := FarRightMonitorHeight
+        case "BottomRight":
+        global BottomRightEdgeForgivenessX, BottomRightEdgeForgivenessY, BottomRightMonitorWidth, BottomRightMonitorHeight
+        MonitorX := BottomRightEdgeForgivenessX
+        MonitorY := BottomRightEdgeForgivenessY
+        MonitorWidth := BottomRightMonitorWidth
+        MonitorHeight := BottomRightMonitorHeight
 
         case "Left":
         global LeftEdgeForgivenessX, LeftEdgeForgivenessY, LeftMonitorWidth, LeftMonitorHeight
@@ -215,12 +187,12 @@ Activate(Monitor)
         MonitorWidth := LeftMonitorWidth
         MonitorHeight := LeftMonitorHeight
 
-        case "FarLeft":
-        global FarLeftEdgeForgivenessX, FarLeftEdgeForgivenessY, FarLeftMonitorWidth, FarLeftMonitorHeight
-        MonitorX := FarLeftEdgeForgivenessX
-        MonitorY := FarLeftEdgeForgivenessY
-        MonitorWidth := FarLeftMonitorWidth
-        MonitorHeight := FarLeftMonitorHeight
+        case "BottomLeft":
+        global BottomLeftEdgeForgivenessX, BottomLeftEdgeForgivenessY, BottomLeftMonitorWidth, BottomLeftMonitorHeight
+        MonitorX := BottomLeftEdgeForgivenessX
+        MonitorY := BottomLeftEdgeForgivenessY
+        MonitorWidth := BottomLeftMonitorWidth
+        MonitorHeight := BottomLeftMonitorHeight
 
         case "Bottom":
         global BottomEdgeForgivenessX, BottomEdgeForgivenessY, BottomMonitorWidth, BottomMonitorHeight
@@ -249,13 +221,6 @@ Activate(Monitor)
         MonitorY := UpCenterEdgeForgivenessY
         MonitorWidth := UpCenterMonitorWidth
         MonitorHeight := UpCenterMonitorHeight
-
-        case "Reading":
-        global ReadingEdgeForgivenessX, ReadingEdgeForgivenessY, ReadingMonitorWidth, ReadingMonitorHeight
-        MonitorX := ReadingEdgeForgivenessX
-        MonitorY := ReadingEdgeForgivenessY
-        MonitorWidth := ReadingMonitorWidth
-        MonitorHeight := ReadingMonitorHeight
 
     }
 
@@ -292,12 +257,12 @@ MoveTo(Monitor)
         MonitorWidth := RightMonitorWidth
         MonitorHeight := RightMonitorHeight
 
-        case "FarRight":
-        global FarRightMonitorX, FarRightMonitorY, FarRightMonitorWidth, FarRightMonitorHeight
-        MonitorX := FarRightMonitorX
-        MonitorY := FarRightMonitorY
-        MonitorWidth := FarRightMonitorWidth
-        MonitorHeight := FarRightMonitorHeight
+        case "BottomRight":
+        global BottomRightMonitorX, BottomRightMonitorY, BottomRightMonitorWidth, BottomRightMonitorHeight
+        MonitorX := BottomRightMonitorX
+        MonitorY := BottomRightMonitorY
+        MonitorWidth := BottomRightMonitorWidth
+        MonitorHeight := BottomRightMonitorHeight
 
         case "Left":
         global LeftMonitorX, LeftMonitorY, LeftMonitorWidth, LeftMonitorHeight
@@ -306,12 +271,12 @@ MoveTo(Monitor)
         MonitorWidth := LeftMonitorWidth
         MonitorHeight := LeftMonitorHeight
 
-        case "FarLeft":
-        global FarLeftMonitorX, FarLeftMonitorY, FarLeftMonitorWidth, FarLeftMonitorHeight
-        MonitorX := FarLeftMonitorX
-        MonitorY := FarLeftMonitorY
-        MonitorWidth := FarLeftMonitorWidth
-        MonitorHeight := FarLeftMonitorHeight
+        case "BottomLeft":
+        global BottomLeftMonitorX, BottomLeftMonitorY, BottomLeftMonitorWidth, BottomLeftMonitorHeight
+        MonitorX := BottomLeftMonitorX
+        MonitorY := BottomLeftMonitorY
+        MonitorWidth := BottomLeftMonitorWidth
+        MonitorHeight := BottomLeftMonitorHeight
 
         case "Bottom":
         global BottomMonitorX, BottomMonitorY, BottomMonitorWidth, BottomMonitorHeight
@@ -341,27 +306,6 @@ MoveTo(Monitor)
         MonitorWidth := UpCenterMonitorWidth
         MonitorHeight := UpCenterMonitorHeight
 
-        case "Reading":
-        global ReadingMonitorX, ReadingMonitorY, ReadingMonitorWidth, ReadingMonitorHeight
-        MonitorX := ReadingMonitorX
-        MonitorY := ReadingMonitorY
-        MonitorWidth := ReadingMonitorWidth
-        MonitorHeight := ReadingMonitorHeight
-
-        case "Full":
-        global FullMonitorX, FullMonitorY, FullMonitorWidth, FullMonitorHeight
-        MonitorX := FullMonitorX
-        MonitorY := FullMonitorY
-        MonitorWidth := FullMonitorWidth
-        MonitorHeight := FullMonitorHeight
-
-        case "Tok":
-        global TokMonitorX, TokMonitorY, TokMonitorWidth, TokMonitorHeight
-        MonitorX := TokMonitorX
-        MonitorY := TokMonitorY
-        MonitorWidth := TokMonitorWidth
-        MonitorHeight := TokMonitorHeight
-
     }
     WinMove, A, , MonitorX, MonitorY, MonitorWidth, MonitorHeight
 }
@@ -380,14 +324,14 @@ SwapWith(Monitor)
         case "Right":
         Activate("Right")
 
-        case "FarRight":
-        Activate("FarRight")
+        case "BottomRight":
+        Activate("BottomRight")
 
         case "Left":
         Activate("Left")
 
-        case "FarLeft":
-        Activate("FarLeft")
+        case "BottomLeft":
+        Activate("BottomLeft")
 
         case "Bottom":
         Activate("Bottom")
@@ -401,8 +345,6 @@ SwapWith(Monitor)
         case "UpCenter":
         Activate("UpCenter")
 
-        case "Reading":
-        Activate("Reading")
     }
 
     WinGetPos, ToX, ToY, ToWidth, ToHeight, A
@@ -418,14 +360,14 @@ SwapWith(Monitor)
         case "Right":
         Activate("Right")
 
-        case "FarRight":
-        Activate("FarRight")
+        case "BottomRight":
+        Activate("BottomRight")
 
         case "Left":
         Activate("Left")
 
-        case "FarLeft":
-        Activate("FarLeft")
+        case "BottomLeft":
+        Activate("BottomLeft")
 
         case "Bottom":
         Activate("Bottom")
@@ -439,7 +381,5 @@ SwapWith(Monitor)
         case "UpCenter":
         Activate("UpCenter")
 
-        case "Reading":
-        Activate("Reading")
     }
 }
