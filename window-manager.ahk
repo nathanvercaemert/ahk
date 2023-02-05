@@ -152,8 +152,18 @@ MouseToActiveWindow()
 
 Cycle()
 {
-    CurrentMonitor := GetMonitor() 
-    MsgBox %Test%
+    CurrentMonitor := GetMonitor()
+    CurrentMonitorName := CurrentMonitor[1]
+    ; CurrentMonitorX := CurrentMonitor[2]
+    ; CurrentMonitorY := CurrentMonitor[3]
+    ; CurrentMonitorWidth := CurrentMonitor[4]
+    ; CurrentMonitorHeight := CurrentMonitor[5]
+
+    ; AllWindowIds := GetAllWindowIds()
+    ; AllWindowIdsInMonitor := GetWindowIdsInMonitor(AllWindowIds, CurrentMonitorX, CurrentMonitorY, CurrentMonitorWidth, CurrentMonitorHeight)
+
+    WinSet, Bottom, , A
+    Activate(CurrentMonitorName)
 }
 
 GetMonitor()
@@ -163,65 +173,119 @@ GetMonitor()
     global MiddleMonitorX, MiddleMonitorWidth, MiddleMonitorY, MiddleMonitorHeight, EdgeForgiveness
     XBound := MiddleMonitorX + MiddleMonitorWidth - EdgeForgiveness
     YBound := MiddleMonitorY + MiddleMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("Middle")
+ReturnArray.push(MiddleMonitorX)
+ReturnArray.push(MiddleMonitorY)
+ReturnArray.push(MiddleMonitorWidth)
+ReturnArray.push(MiddleMonitorHeight)
     if X_Win between %MiddleMonitorX% and %XBound%
         if Y_Win between %MiddleMonitorY% and %YBound%
-                Return "Middle"
+                Return ReturnArray
 
     global RightMonitorX, RightMonitorWidth, RightMonitorY, RightMonitorHeight, EdgeForgiveness
     XBound := RightMonitorX + RightMonitorWidth - EdgeForgiveness
     YBound := RightMonitorY + RightMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("Right")
+ReturnArray.push(RightMonitorX)
+ReturnArray.push(RightMonitorY)
+ReturnArray.push(RightMonitorWidth)
+ReturnArray.push(RightMonitorHeight)
     if X_Win between %RightMonitorX% and %XBound%
         if Y_Win between %RightMonitorY% and %YBound%
-                Return "Right"
+                Return ReturnArray
 
     global LeftMonitorX, LeftMonitorWidth, LeftMonitorY, LeftMonitorHeight, EdgeForgiveness
     XBound := LeftMonitorX + LeftMonitorWidth - EdgeForgiveness
     YBound := LeftMonitorY + LeftMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("Left")
+ReturnArray.push(LeftMonitorX)
+ReturnArray.push(LeftMonitorY)
+ReturnArray.push(LeftMonitorWidth)
+ReturnArray.push(LeftMonitorHeight)
     if X_Win between %LeftMonitorX% and %XBound%
         if Y_Win between %LeftMonitorY% and %YBound%
-                Return "Left"
+                Return ReturnArray
 
     global UpCenterMonitorX, UpCenterMonitorWidth, UpCenterMonitorY, UpCenterMonitorHeight, EdgeForgiveness
     XBound := UpCenterMonitorX + UpCenterMonitorWidth - EdgeForgiveness
     YBound := UpCenterMonitorY + UpCenterMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("UpCenter")
+ReturnArray.push(UpCenterMonitorX)
+ReturnArray.push(UpCenterMonitorY)
+ReturnArray.push(UpCenterMonitorWidth)
+ReturnArray.push(UpCenterMonitorHeight)
     if X_Win between %UpCenterMonitorX% and %XBound%
         if Y_Win between %UpCenterMonitorY% and %YBound%
-                Return "UpCenter"
+                Return ReturnArray
 
     global UpRightMonitorX, UpRightMonitorWidth, UpRightMonitorY, UpRightMonitorHeight, EdgeForgiveness
     XBound := UpRightMonitorX + UpRightMonitorWidth - EdgeForgiveness
     YBound := UpRightMonitorY + UpRightMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("UpRight")
+ReturnArray.push(UpRightMonitorX)
+ReturnArray.push(UpRightMonitorY)
+ReturnArray.push(UpRightMonitorWidth)
+ReturnArray.push(UpRightMonitorHeight)
     if X_Win between %UpRightMonitorX% and %XBound%
         if Y_Win between %UpRightMonitorY% and %YBound%
-                Return "UpRight"
+                Return ReturnArray
 
     global UpLeftMonitorX, UpLeftMonitorWidth, UpLeftMonitorY, UpLeftMonitorHeight, EdgeForgiveness
     XBound := UpLeftMonitorX + UpLeftMonitorWidth - EdgeForgiveness
     YBound := UpLeftMonitorY + UpLeftMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("UpLeft")
+ReturnArray.push(UpLeftMonitorX)
+ReturnArray.push(UpLeftMonitorY)
+ReturnArray.push(UpLeftMonitorWidth)
+ReturnArray.push(UpLeftMonitorHeight)
     if X_Win between %UpLeftMonitorX% and %XBound%
         if Y_Win between %UpLeftMonitorY% and %YBound%
-                Return "UpLeft"
+                Return ReturnArray
 
     global BottomCenterX, BottomMonitorWidth, BottomCenterY, BottomMonitorHeight, EdgeForgiveness
     XBound := BottomCenterX + BottomMonitorWidth - EdgeForgiveness
     YBound := BottomCenterY + BottomMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("Bottom")
+ReturnArray.push(BottomCenterX)
+ReturnArray.push(BottomCenterY)
+ReturnArray.push(BottomMonitorWidth)
+ReturnArray.push(BottomMonitorHeight)
     if X_Win between %BottomCenterX% and %XBound%
         if Y_Win between %BottomCenterY% and %YBound%
-                Return "Bottom"
+                Return ReturnArray
 
     global BottomRightMonitorX, BottomRightMonitorWidth, BottomRightMonitorY, BottomRightMonitorHeight, EdgeForgiveness
     XBound := BottomRightMonitorX + BottomRightMonitorWidth - EdgeForgiveness
     YBound := BottomRightMonitorY + BottomRightMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("BottomRight")
+ReturnArray.push(BottomRightMonitorX)
+ReturnArray.push(BottomRightMonitorY)
+ReturnArray.push(BottomRightMonitorWidth)
+ReturnArray.push(BottomRightMonitorHeight)
     if X_Win between %BottomRightMonitorX% and %XBound%
         if Y_Win between %BottomRightMonitorY% and %YBound%
-                Return "BottomRight"
+                Return ReturnArray
 
     global BottomLeftMonitorX, BottomLeftMonitorWidth, BottomLeftMonitorY, BottomLeftMonitorHeight, EdgeForgiveness
     XBound := BottomLeftMonitorX + BottomLeftMonitorWidth - EdgeForgiveness
     YBound := BottomLeftMonitorY + BottomLeftMonitorHeight - EdgeForgiveness
+    ReturnArray := []
+ReturnArray.push("BottomLeft")
+ReturnArray.push(BottomLeftMonitorX)
+ReturnArray.push(BottomLeftMonitorY)
+ReturnArray.push(BottomLeftMonitorWidth)
+ReturnArray.push(BottomLeftMonitorHeight)
     if X_Win between %BottomLeftMonitorX% and %XBound%
         if Y_Win between %BottomLeftMonitorY% and %YBound%
-                Return "BottomLeft"
+                Return ReturnArray
 
 }
 
@@ -302,11 +366,14 @@ Activate(Monitor)
     AllWindowIds := GetAllWindowIds()
 
     ; these are retrieved in the order in which they
-    ; stack - index 0 is top
+    ; stack - index 0 is top (and ahk is 1-indexed)
     WindowIdsInMonitor := GetWindowIdsInMonitor(AllWindowIds, MonitorX, MonitorY, MonitorWidth, MonitorHeight)
     TopWindowIdInMonitor := WindowIdsInMonitor[1]
 
     WinActivate, ahk_id %TopWindowIdInMonitor%
+
+    ; ActiveWindow := WinActive("A")
+    ; DllCall("FlashWindow", UInt, ActiveWindow, Int, True)
 }
 
 MoveTo(Monitor)
