@@ -150,6 +150,81 @@ MouseToActiveWindow()
     return
 }
 
+Cycle()
+{
+    CurrentMonitor := GetMonitor() 
+    MsgBox %Test%
+}
+
+GetMonitor()
+{
+    WinGetPos, X_Win, Y_Win, , , A
+
+    global MiddleMonitorX, MiddleMonitorWidth, MiddleMonitorY, MiddleMonitorHeight, EdgeForgiveness
+    XBound := MiddleMonitorX + MiddleMonitorWidth - EdgeForgiveness
+    YBound := MiddleMonitorY + MiddleMonitorHeight - EdgeForgiveness
+    if X_Win between %MiddleMonitorX% and %XBound%
+        if Y_Win between %MiddleMonitorY% and %YBound%
+                Return "Middle"
+
+    global RightMonitorX, RightMonitorWidth, RightMonitorY, RightMonitorHeight, EdgeForgiveness
+    XBound := RightMonitorX + RightMonitorWidth - EdgeForgiveness
+    YBound := RightMonitorY + RightMonitorHeight - EdgeForgiveness
+    if X_Win between %RightMonitorX% and %XBound%
+        if Y_Win between %RightMonitorY% and %YBound%
+                Return "Right"
+
+    global LeftMonitorX, LeftMonitorWidth, LeftMonitorY, LeftMonitorHeight, EdgeForgiveness
+    XBound := LeftMonitorX + LeftMonitorWidth - EdgeForgiveness
+    YBound := LeftMonitorY + LeftMonitorHeight - EdgeForgiveness
+    if X_Win between %LeftMonitorX% and %XBound%
+        if Y_Win between %LeftMonitorY% and %YBound%
+                Return "Left"
+
+    global UpCenterMonitorX, UpCenterMonitorWidth, UpCenterMonitorY, UpCenterMonitorHeight, EdgeForgiveness
+    XBound := UpCenterMonitorX + UpCenterMonitorWidth - EdgeForgiveness
+    YBound := UpCenterMonitorY + UpCenterMonitorHeight - EdgeForgiveness
+    if X_Win between %UpCenterMonitorX% and %XBound%
+        if Y_Win between %UpCenterMonitorY% and %YBound%
+                Return "UpCenter"
+
+    global UpRightMonitorX, UpRightMonitorWidth, UpRightMonitorY, UpRightMonitorHeight, EdgeForgiveness
+    XBound := UpRightMonitorX + UpRightMonitorWidth - EdgeForgiveness
+    YBound := UpRightMonitorY + UpRightMonitorHeight - EdgeForgiveness
+    if X_Win between %UpRightMonitorX% and %XBound%
+        if Y_Win between %UpRightMonitorY% and %YBound%
+                Return "UpRight"
+
+    global UpLeftMonitorX, UpLeftMonitorWidth, UpLeftMonitorY, UpLeftMonitorHeight, EdgeForgiveness
+    XBound := UpLeftMonitorX + UpLeftMonitorWidth - EdgeForgiveness
+    YBound := UpLeftMonitorY + UpLeftMonitorHeight - EdgeForgiveness
+    if X_Win between %UpLeftMonitorX% and %XBound%
+        if Y_Win between %UpLeftMonitorY% and %YBound%
+                Return "UpLeft"
+
+    global BottomCenterX, BottomMonitorWidth, BottomCenterY, BottomMonitorHeight, EdgeForgiveness
+    XBound := BottomCenterX + BottomMonitorWidth - EdgeForgiveness
+    YBound := BottomCenterY + BottomMonitorHeight - EdgeForgiveness
+    if X_Win between %BottomCenterX% and %XBound%
+        if Y_Win between %BottomCenterY% and %YBound%
+                Return "Bottom"
+
+    global BottomRightMonitorX, BottomRightMonitorWidth, BottomRightMonitorY, BottomRightMonitorHeight, EdgeForgiveness
+    XBound := BottomRightMonitorX + BottomRightMonitorWidth - EdgeForgiveness
+    YBound := BottomRightMonitorY + BottomRightMonitorHeight - EdgeForgiveness
+    if X_Win between %BottomRightMonitorX% and %XBound%
+        if Y_Win between %BottomRightMonitorY% and %YBound%
+                Return "BottomRight"
+
+    global BottomLeftMonitorX, BottomLeftMonitorWidth, BottomLeftMonitorY, BottomLeftMonitorHeight, EdgeForgiveness
+    XBound := BottomLeftMonitorX + BottomLeftMonitorWidth - EdgeForgiveness
+    YBound := BottomLeftMonitorY + BottomLeftMonitorHeight - EdgeForgiveness
+    if X_Win between %BottomLeftMonitorX% and %XBound%
+        if Y_Win between %BottomLeftMonitorY% and %YBound%
+                Return "BottomLeft"
+
+}
+
 Activate(Monitor)
 {
     MonitorX := 0

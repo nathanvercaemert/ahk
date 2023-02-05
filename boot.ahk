@@ -112,7 +112,7 @@ Activate("Right")
 Return
 
 ^!#L::
-Activate("FarRight")
+Activate("BottomRight")
 Return
 
 ^!#M::
@@ -120,7 +120,7 @@ Activate("Left")
 Return
 
 ^!#N::
-Activate("FarLeft")
+Activate("BottomLeft")
 Return
 
 ^!#O::
@@ -148,7 +148,7 @@ MoveTo("Right")
 Return
 
 ^!#R::
-MoveTo("FarRight")
+MoveTo("BottomRight")
 Return
 
 ^!#S::
@@ -156,7 +156,7 @@ MoveTo("Left")
 Return
 
 ^!#T::
-MoveTo("FarLeft")
+MoveTo("BottomLeft")
 Return
 
 ^!#U::
@@ -184,7 +184,7 @@ SwapWith("Right")
 Return
 
 ^!#Z::
-SwapWith("FarRight")
+SwapWith("BottomRight")
 Return
 
 ^!#1::
@@ -192,7 +192,7 @@ SwapWith("Left")
 Return
 
 ^!#2::
-SwapWith("FarLeft")
+SwapWith("BottomLeft")
 Return
 
 ^!#3::
@@ -209,6 +209,10 @@ Return
 
 ^!#6::
 SwapWith("UpCenter")
+Return
+
+^!#0::
+Cycle()
 Return
 
 
