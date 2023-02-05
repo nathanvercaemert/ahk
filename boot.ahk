@@ -35,11 +35,26 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; ahk prefix
 F19::
 Return
+
 #If A_PriorHotkey = "F19"
 
 ; basic emacs alacritty run command (Win+r)
-a::
-Send "alacritty --config-file C:\\Users\\nverc\\AppData\\Roaming\\alacritty\\alacritty.yml -e wsl -d Ubuntu --user vercaemert emacsclient -nw"
+w::
+Send alacritty --config-file C:\\Users\\nverc\\AppData\\Roaming\\alacritty\\alacritty.yml -e wsl -d Ubuntu --user vercaemert emacsclient -nw
+Return
+
+; retart boot.ahk
+b::
+Run C:\\Users\nverc\OneDrive\Documents\etc\ahk\boot.ahk
+Return
+
+d::
+Send alacritty --config-file C:\Users\nverc\AppData\Roaming\alacritty\alacritty.yml -e docker exec -it vercaemert env TERM=xterm-256color emacsclient -nw
+Return
+
+; test
+t::
+MsgBox test
 Return
 
 #If
@@ -293,6 +308,13 @@ Return
 ; Emacs terminal !Enter->C-m
 !Enter::
 Send !^m
+Return
+
+; Emacs up instead of ^p
+; because having issues with docker
+; docker doesn't process ^p correctly for some reason
+^p::
+Send {Up}
 Return
 
 #If

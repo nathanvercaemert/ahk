@@ -4,8 +4,8 @@ EdgeForgiveness := 50
 
 RightMonitorX := ScreenWidth
 RightMonitorY := 0
-RightMonitorWidth := ScreenWidth
-RightMonitorHeight := ScreenHeight
+RightMonitorWidth := ScreenHeight
+RightMonitorHeight := ScreenWidth
 RightCenterX := RightMonitorX + RightMonitorWidth / 2
 RightCenterY := RightMonitorY + RightMonitorHeight / 2
 RightEdgeForgivenessX := RightMonitorX - EdgeForgiveness
@@ -20,10 +20,10 @@ MiddleCenterY := MiddleMonitorY + MiddleMonitorHeight / 2
 EdgeForgivenessX := MiddleMonitorX - EdgeForgiveness
 EdgeForgivenessY := MiddleMonitorY - EdgeForgiveness
 
-FarRightMonitorX := ScreenWidth + ScreenWidth
+FarRightMonitorX := ScreenWidth + ScreenHeight
 FarRightMonitorY := 0
-FarRightMonitorWidth := 2560
-FarRightMonitorHeight := 1600
+FarRightMonitorWidth := ScreenHeight
+FarRightMonitorHeight := ScreenWidth
 FarRightCenterX := FarRightMonitorX + FarRightMonitorWidth / 2
 FarRightCenterY := FarRightMonitorY + FarRightMonitorHeight / 2
 FarRightEdgeForgivenessX := FarRightMonitorX - EdgeForgiveness
