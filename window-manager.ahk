@@ -97,6 +97,12 @@ GetAllWindowIds()
         }
     }
 
+    return AllWindowIds
+}
+
+FilterWindowIds(AllWindowIds)
+{
+
     ; ; for finding names to blacklist:
     ; ;
     ; ; if something says it's there and it's not actually,
@@ -112,9 +118,21 @@ GetAllWindowIds()
     ;     Output = %Output%%Xpos%,%Ypos%,%Class%,%Title%`n
     ; }
     ; MsgBox, %Output%
-    ; return []
+    ; ; return []
 
-    return AllWindowIds
+    FilterWindowIds := []
+    for Index, WindowId in AllWindowIds
+    {
+        Id := WindowId
+        WinGetTitle Title, ahk_id %Id%
+        WinGetClass Class, ahk_id %Id%
+        WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
+        if (Class != "Progman") { ; blacklist
+            FilterWindowIds.Push(WindowId)
+        }
+    }
+    return FilterWindowIds
+
 }
 
 GetWindowIdsInMonitor(AllWindowIds, MonitorX, MonitorY, MonitorWidth, MonitorHeight)
@@ -365,9 +383,11 @@ Activate(Monitor)
 
     AllWindowIds := GetAllWindowIds()
 
+    FilteredWindowIds := FilterWindowIds(AllWindowIds)
+
     ; these are retrieved in the order in which they
     ; stack - index 0 is top (and ahk is 1-indexed)
-    WindowIdsInMonitor := GetWindowIdsInMonitor(AllWindowIds, MonitorX, MonitorY, MonitorWidth, MonitorHeight)
+    WindowIdsInMonitor := GetWindowIdsInMonitor(FilteredWindowIds, MonitorX, MonitorY, MonitorWidth, MonitorHeight)
     TopWindowIdInMonitor := WindowIdsInMonitor[1]
 
     WinActivate, ahk_id %TopWindowIdInMonitor%
@@ -491,37 +511,46 @@ SwapWith(Monitor)
 
     WinGetPos, ToX, ToY, ToWidth, ToHeight, A
     MovingTo := WinExist("A")
-    WinMove, ahk_id %MovingTo%, , FromX, FromY, FromWidth, FromHeight
-    WinMove, ahk_id %MovingFrom%, , ToX, ToY, ToWidth, ToHeight
 
-    switch Monitor
+    if (MovingFrom = MovingTo)
     {
-        case "Middle":
-        Activate("Middle")
+MoveTo(Monitor)
+    } else
+    {
 
-        case "Right":
-        Activate("Right")
+        WinMove, ahk_id %MovingTo%, , FromX, FromY, FromWidth, FromHeight
+        WinMove, ahk_id %MovingFrom%, , ToX, ToY, ToWidth, ToHeight
 
-        case "BottomRight":
-        Activate("BottomRight")
+        switch Monitor
+        {
+            case "Middle":
+            Activate("Middle")
 
-        case "Left":
-        Activate("Left")
+            case "Right":
+            Activate("Right")
 
-        case "BottomLeft":
-        Activate("BottomLeft")
+            case "BottomRight":
+            Activate("BottomRight")
 
-        case "Bottom":
-        Activate("Bottom")
+            case "Left":
+            Activate("Left")
 
-        case "UpLeft":
-        Activate("UpLeft")
+            case "BottomLeft":
+            Activate("BottomLeft")
 
-        case "UpRight":
-        Activate("UpRight")
+            case "Bottom":
+            Activate("Bottom")
 
-        case "UpCenter":
-        Activate("UpCenter")
+            case "UpLeft":
+            Activate("UpLeft")
+
+            case "UpRight":
+            Activate("UpRight")
+
+            case "UpCenter":
+            Activate("UpCenter")
+
+        }
 
     }
 }
