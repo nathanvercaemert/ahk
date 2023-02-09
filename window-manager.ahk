@@ -83,6 +83,8 @@ UpCenterCenterY := UpCenterMonitorY + UpCenterMonitorHeight / 2
 UpCenterEdgeForgivenessX := UpCenterMonitorX - EdgeForgiveness
 UpCenterEdgeForgivenessY := UpCenterMonitorY - EdgeForgiveness
 
+#Include sub-window-manager.ahk
+
 GetAllWindowIds()
 {
     AllWindowIds := []
@@ -90,13 +92,8 @@ GetAllWindowIds()
     Loop %Windows%
     {
         Id := Windows%A_Index%
-        WinGetTitle Title, ahk_id %Id%
-        if (Title != "") && (Title != "ZPToolBarParentWnd") && (Title != "JamPostMessageWindow")
-        {
-            AllWindowIds.Push(Id)
-        }
+        AllWindowIds.Push(Id)
     }
-
     return AllWindowIds
 }
 
@@ -127,7 +124,7 @@ FilterWindowIds(AllWindowIds)
         WinGetTitle Title, ahk_id %Id%
         WinGetClass Class, ahk_id %Id%
         WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
-        if (Class != "Progman") { ; blacklist
+        if (Title != "") && (Title != "ZPToolBarParentWnd") && (Title != "JamPostMessageWindow") && (Class != "Progman") { ; blacklist
             FilterWindowIds.Push(WindowId)
         }
     }
