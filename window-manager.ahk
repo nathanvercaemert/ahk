@@ -29,10 +29,10 @@ BottomRightCenterY := BottomRightMonitorY + BottomRightMonitorHeight / 2
 BottomRightEdgeForgivenessX := BottomRightMonitorX - EdgeForgiveness
 BottomRightEdgeForgivenessY := BottomRightMonitorY - EdgeForgiveness
 
-LeftMonitorX := 0 - ScreenHeight
+LeftMonitorX := 0 - ScreenWidth
 LeftMonitorY := 0
-LeftMonitorWidth := ScreenHeight
-LeftMonitorHeight := ScreenWidth
+LeftMonitorWidth := ScreenWidth
+LeftMonitorHeight := ScreenHeight
 LeftCenterX := LeftMonitorX + LeftMonitorWidth / 2
 LeftCenterY := LeftMonitorY + LeftMonitorHeight / 2
 LeftEdgeForgivenessX := LeftMonitorX - EdgeForgiveness
@@ -125,6 +125,23 @@ FilterWindowIds(AllWindowIds)
         WinGetClass Class, ahk_id %Id%
         WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
         if (Title != "") && (Title != "ZPToolBarParentWnd") && (Title != "JamPostMessageWindow") && (Class != "Progman") { ; blacklist
+            FilterWindowIds.Push(WindowId)
+        }
+    }
+    return FilterWindowIds
+
+}
+
+FilterWow(AllWindowIds)
+{
+    FilterWindowIds := []
+    for Index, WindowId in AllWindowIds
+    {
+        Id := WindowId
+        WinGetTitle Title, ahk_id %Id%
+        WinGetClass Class, ahk_id %Id%
+        WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
+        if (Title == "World of Warcraft") {
             FilterWindowIds.Push(WindowId)
         }
     }
@@ -391,6 +408,17 @@ Activate(Monitor)
 
     ; ActiveWindow := WinActive("A")
     ; DllCall("FlashWindow", UInt, ActiveWindow, Int, True)
+}
+
+ActivateWow()
+{
+    AllWindowIds := GetAllWindowIds()
+
+    FilteredWindowIds := FilterWow(AllWindowIds)
+
+    Wow := FilteredWindowIds[1]
+
+    WinActivate, ahk_id %Wow%
 }
 
 MoveTo(Monitor)

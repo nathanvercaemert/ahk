@@ -215,6 +215,10 @@ Return
 Cycle()
 Return
 
+^!#7::
+ActivateWow()
+Return
+
 
 ; these make the hyper key do nothing
 
