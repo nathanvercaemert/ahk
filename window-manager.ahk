@@ -117,7 +117,7 @@ FilterWindowIds(AllWindowIds)
     ; MsgBox, %Output%
     ; ; return []
 
-    FilterWindowIds := []
+    FilteredWindowIds := []
     for Index, WindowId in AllWindowIds
     {
         Id := WindowId
@@ -125,16 +125,16 @@ FilterWindowIds(AllWindowIds)
         WinGetClass Class, ahk_id %Id%
         WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
         if (Title != "") && (Title != "ZPToolBarParentWnd") && (Title != "JamPostMessageWindow") && (Class != "Progman") { ; blacklist
-            FilterWindowIds.Push(WindowId)
+            FilteredWindowIds.Push(WindowId)
         }
     }
-    return FilterWindowIds
+    return FilteredWindowIds
 
 }
 
 FilterWow(AllWindowIds)
 {
-    FilterWindowIds := []
+    FilteredWindowIds := []
     for Index, WindowId in AllWindowIds
     {
         Id := WindowId
@@ -142,10 +142,10 @@ FilterWow(AllWindowIds)
         WinGetClass Class, ahk_id %Id%
         WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
         if (Title == "World of Warcraft") {
-            FilterWindowIds.Push(WindowId)
+            FilteredWindowIds.Push(WindowId)
         }
     }
-    return FilterWindowIds
+    return FilteredWindowIds
 
 }
 

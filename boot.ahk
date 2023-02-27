@@ -215,10 +215,35 @@ Return
 Cycle()
 Return
 
+
+; ************
+; ************
+; WOW ********
+; ************
+; ************
+
 ^!#7::
 ActivateWow()
 Return
 
+#IfWinActive ahk_class GxWindowClass
+
+!+F1::
+Send !+{F1}
+MouseToActiveWindow()
+Return
+
+!7::
+Send !7
+MouseToActiveWindow()
+Return
+
+!8::
+Send !8
+MouseToActiveWindow()
+Return
+
+#If
 
 ; these make the hyper key do nothing
 
