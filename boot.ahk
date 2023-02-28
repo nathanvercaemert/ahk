@@ -498,21 +498,29 @@ Return
 ; forward word
 !f::
 Send ^{Right}
+Send ^{Right}
+Send ^{Left}
 Return
 
 ; shift forward word
 +!f::
 Send +^{Right}
+Send +^{Right}
+Send ^+{Left}
 Return
 
 ; backward word
 !b::
 Send ^{Left}
+Send ^{Left}
+Send ^{Right}
 Return
 
 ; shift backward word
 !+b::
 Send ^+{Left}
+Send ^+{Left}
+Send ^+{Right}
 Return
 
 ; kill backward word
