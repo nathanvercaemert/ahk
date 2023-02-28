@@ -6,7 +6,12 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include window-manager.ahk
 
 
-; ; let me relax without teams going idle
+; ************
+; ************
+; Idle *******
+; ************
+; ************
+
 ; KeepWinZRunning := true
 ; #MaxThreadsPerHotkey 3
 ; #z::  
@@ -32,7 +37,12 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; return
 
 
-; ahk prefix
+; **********
+; **********
+; AHK Prefix
+; **********
+; **********
+
 F19::
 Return
 
@@ -60,9 +70,13 @@ Return
 #If
 
 
-; window management
+; *****************
+; *****************
+; Window Management
+; *****************
+; *****************
 
-; maximize active window
+; Maximize Active Window
 #Up::
 WinMaximize, A, , ,
 Return
@@ -71,23 +85,23 @@ Return
 MouseToActiveWindow()
 Return
 
-; resize frames
+; Resize Frames
 
-; top half
+; Top Half
 ^!#A::
 WinGetPos, X, Y, Width, Height, A
 HalfHeight := Height / 2
 WinMove, A, , X, Y, Width, HalfHeight
 return
 
-; left half
+; Left Half
 ^!#B::
 WinGetPos, X, Y, Width, Height, A
 HalfWidth := Width / 2
 WinMove, A, , X, Y, HalfWidth, Height
 return
 
-; bottom half
+; Bottom Half
 ^!#C::
 WinGetPos, X, Y, Width, Height, A
 HalfHeight := Height / 2
@@ -95,7 +109,7 @@ NewY := Y + HalfHeight
 WinMove, A, , X, NewY, Width, HalfHeight
 return
 
-; right half
+; Right Half
 ^!#D::
 WinGetPos, X, Y, Width, Height, A
 HalfWidth := Width / 2
@@ -111,32 +125,8 @@ Return
 Activate("Right")
 Return
 
-^!#L::
-Activate("BottomRight")
-Return
-
 ^!#M::
 Activate("Left")
-Return
-
-^!#N::
-Activate("BottomLeft")
-Return
-
-^!#O::
-Activate("Bottom")
-Return
-
-^!#P::
-Activate("UpLeft")
-Return
-
-^!#Q::
-Activate("UpRight")
-Return
-
-^!#X::
-Activate("UpCenter")
 Return
 
 ^!#F::
@@ -147,32 +137,8 @@ Return
 MoveTo("Right")
 Return
 
-^!#R::
-MoveTo("BottomRight")
-Return
-
 ^!#S::
 MoveTo("Left")
-Return
-
-^!#T::
-MoveTo("BottomLeft")
-Return
-
-^!#U::
-MoveTo("Bottom")
-Return
-
-^!#V::
-MoveTo("UpLeft")
-Return
-
-^!#W::
-MoveTo("UpRight")
-Return
-
-^!#Y::
-MoveTo("UpCenter")
 Return
 
 ^!#J::
@@ -183,32 +149,8 @@ Return
 SwapWith("Right")
 Return
 
-^!#Z::
-SwapWith("BottomRight")
-Return
-
 ^!#1::
 SwapWith("Left")
-Return
-
-^!#2::
-SwapWith("BottomLeft")
-Return
-
-^!#3::
-SwapWith("Bottom")
-Return
-
-^!#4::
-SwapWith("UpLeft")
-Return
-
-^!#5::
-SwapWith("UpRight")
-Return
-
-^!#6::
-SwapWith("UpCenter")
 Return
 
 ^!#0::
@@ -245,7 +187,12 @@ Return
 
 #If
 
-; these make the hyper key do nothing
+
+; *****************************
+; *****************************
+; Make The Hyper Key Do Nothing
+; *****************************
+; *****************************
 
 #^!Shift::
 #^+Alt::
@@ -256,7 +203,11 @@ Send {Blind}{vk07}
 Return
 
 
-; hotkeys I accidentally press
+; ****************************
+; ****************************
+; Hotkeys I Accidentally Press
+; ****************************
+; ****************************
 
 #c::
 Return
@@ -271,7 +222,11 @@ Return
 Return
 
 
-; sticky notes
+; ************
+; ************
+; Sticky Notes
+; ************
+; ************
 
 ; a new reasonably sized text note in a reasonable place
 ^+!#t::
@@ -298,6 +253,12 @@ WinGet, processId, PID, ahk_id %notepadId%
 Process, close, %processId%
 Return
 
+
+; ***************
+; ***************
+; Alacritty *****
+; ***************
+; ***************
 
 ; pasting into alacritty
 ; clean up the clipboard to remove windows line endings
