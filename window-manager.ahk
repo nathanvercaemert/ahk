@@ -133,10 +133,10 @@ FilterWindowIds(AllWindowIds)
                 continue
             }
             ; current virtual desktop only
-            WindowDesktop := VD.getDesktopNumOfWindow(Title)
+            WindowDesktop := VD._desktopNum_from_Hwnd(Id)
             if (CurrentActiveDesktop != WindowDesktop) {
                 continue
-            }
+            } 
             FilteredWindowIds.Push(WindowId)
         }
     }
@@ -419,6 +419,45 @@ Activate(Monitor)
     TopWindowIdInMonitor := WindowIdsInMonitor[1]
 
     WinActivate, ahk_id %TopWindowIdInMonitor%
+
+    ; ; *****************
+    ; ; make window flash
+    ; ; *****************
+    ; currentStyle := DllCall("GetWindowLong", "Ptr", TopWindowIdInMonitor, "Int", -16)  ; GWL_STYLE = -16
+    ; newStyle := currentStyle ^ 0x800000  ; Modify the style to add/remove WS_BORDER (0x800000)
+    ; DllCall("SetWindowLong", "Ptr", TopWindowIdInMonitor, "Int", -16, "Int", newStyle)
+    ; DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x37)  ; SWP_FRAMECHANGED = 0x20 | SWP_NOZORDER = 0x4 | SWP_NOMOVE = 0x2 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+    ; ; Wait some time before reverting the change
+    ; Sleep, 100
+    ; ; Revert the change
+    ; DllCall("SetWindowLong", "Ptr", TopWindowIdInMonitor, "Int", -16, "Int", currentStyle)
+    ; DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x37)
+
+    ; Get the original position of the window
+    VarSetCapacity(rect, 16)
+    DllCall("GetWindowRect", "Ptr", TopWindowIdInMonitor, "Ptr", &rect)
+    originalX := NumGet(rect, 0, "Int")
+    originalY := NumGet(rect, 4, "Int")
+    ; Constants for the circle movement
+    radius := 5
+    step := 90  ; Degrees of each step, smaller = smoother
+    steps := 360 / step  ; Number of steps for a full circle
+    pi := 3.14159
+    ; Perform the circular movement
+    Loop % steps
+    {
+        ; Convert the step to radians
+        rad := A_Index * step * pi / 180
+        ; Calculate the new position
+        new_X := originalX + radius * Cos(rad)
+        new_Y := originalY + radius * Sin(rad)
+        ; Set the new_ position
+        DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", new_X, "Int", new_Y, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+        ; Wait some time before the next move
+        Sleep, 10
+    }
+    ; Reset the window to the original position
+    DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", originalX, "Int", originalY, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
 
     ; ActiveWindow := WinActive("A")
     ; DllCall("FlashWindow", UInt, ActiveWindow, Int, True)

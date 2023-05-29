@@ -3,8 +3,9 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, Force ; skips the startup (on re-run) dialog box and replaces the old instance automatically
-#Include ./VD.ahk/VD.ahk
+#Include ./VD.ahk/VD.ahk ; virtual desktop submodule (has different header requirements if I ever use more funcitonality)
 #Include window-manager.ahk
+
 
 ; ************
 ; ************
@@ -38,7 +39,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 
 ^!+q::
-
+msgBox test
 Return
 
 
