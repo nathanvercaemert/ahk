@@ -3,8 +3,8 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, Force ; skips the startup (on re-run) dialog box and replaces the old instance automatically
+#Include ./VD.ahk/VD.ahk
 #Include window-manager.ahk
-
 
 ; ************
 ; ************
@@ -35,6 +35,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; }
 ; KeepWinZRunning := false   
 ; return
+
+
+^!+q::
+
+Return
 
 
 ; **********
@@ -278,9 +283,12 @@ Return
 
 #IfWinActive ahk_class Window Class
 
-; Emacs Escape->Quit
+; Emacs Escape->Quit (swap) Quit->Escape
 Esc::
 Send ^g
+Return
+^g::
+Send {Esc}
 Return
 
 ; Emacs terminal !Enter->C-m

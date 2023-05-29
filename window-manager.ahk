@@ -117,6 +117,8 @@ FilterWindowIds(AllWindowIds)
     ; MsgBox, %Output%
     ; ; return []
 
+    CurrentActiveDesktop := VD.getCurrentDesktopNum()
+
     FilteredWindowIds := []
     for Index, WindowId in AllWindowIds
     {
@@ -124,7 +126,17 @@ FilterWindowIds(AllWindowIds)
         WinGetTitle Title, ahk_id %Id%
         WinGetClass Class, ahk_id %Id%
         WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
-        if (Title != "") && (Title != "ZPToolBarParentWnd") && (Title != "JamPostMessageWindow") && (Class != "Progman") { ; blacklist
+        ; blacklist
+        if (Title != "") && (Title != "ZPToolBarParentWnd") && (Title != "JamPostMessageWindow") && (Class != "Winit Thread Event Target") && (Class != "PsuedoConsoleWindow") && (Class != "Shell_TrayWnd") && (Class != "Shell_SecondaryTrayWnd") && (Class != "Progman") && (Class != "WindowsForms10.Window.8.app.0.3399f34_r6_ad1") {
+            ; mobaxterm specific
+            if (Class == "TApplication") {
+                continue
+            }
+            ; current virtual desktop only
+            WindowDesktop := VD.getDesktopNumOfWindow(Title)
+            if (CurrentActiveDesktop != WindowDesktop) {
+                continue
+            }
             FilteredWindowIds.Push(WindowId)
         }
     }
@@ -196,6 +208,8 @@ Cycle()
 
     WinSet, Bottom, , A
     Activate(CurrentMonitorName)
+    ; WinGetClass, ActiveMonitorClass, A
+    ; MsgBox, %ActiveMonitorClass%
 }
 
 GetMonitor()
