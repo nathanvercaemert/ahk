@@ -420,33 +420,36 @@ Activate(Monitor)
 
     WinActivate, ahk_id %TopWindowIdInMonitor%
 
-    ; ; *****************
-    ; ; make window flash
-    ; ; *****************
-    ; currentStyle := DllCall("GetWindowLong", "Ptr", TopWindowIdInMonitor, "Int", -16)  ; GWL_STYLE = -16
-    ; newStyle := currentStyle ^ 0x800000  ; Modify the style to add/remove WS_BORDER (0x800000)
-    ; DllCall("SetWindowLong", "Ptr", TopWindowIdInMonitor, "Int", -16, "Int", newStyle)
-    ; DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x37)  ; SWP_FRAMECHANGED = 0x20 | SWP_NOZORDER = 0x4 | SWP_NOMOVE = 0x2 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
-    ; ; Wait some time before reverting the change
-    ; Sleep, 100
-    ; ; Revert the change
-    ; DllCall("SetWindowLong", "Ptr", TopWindowIdInMonitor, "Int", -16, "Int", currentStyle)
-    ; DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x37)
-
+    ;*******
+    ;*******
+    ; Wiggle
+    ;*******
+    ;*******
     ; Get the original position of the window
     VarSetCapacity(rect, 16)
     DllCall("GetWindowRect", "Ptr", TopWindowIdInMonitor, "Ptr", &rect)
     originalX := NumGet(rect, 0, "Int")
     originalY := NumGet(rect, 4, "Int")
     ; Constants for the circle movement
-    radius := 5
+    radius := 3
     step := 90  ; Degrees of each step, smaller = smoother
     steps := 360 / step  ; Number of steps for a full circle
     pi := 3.14159
     ; Perform the circular movement
     Loop % steps
     {
-        ; Convert the step to radians
+        ; make sure i didn't move the window while it was wiggling
+        VarSetCapacity(rect_test, 16)
+        DllCall("GetWindowRect", "Ptr", TopWindowIdInMonitor, "Ptr", &rect_test)
+        test_X := NumGet(rect_test, 0, "Int")
+        test_Y := NumGet(rect_test, 4, "Int")
+        test_X := Abs(originalX - test_X)
+        test_Y := Abs(originalY - test_Y)
+        test_step := step * 4
+        if (test_X > test_step || test_Y > test_step) {
+            break
+        }
+        ; convert the step to radians
         rad := A_Index * step * pi / 180
         ; Calculate the new position
         new_X := originalX + radius * Cos(rad)
@@ -454,7 +457,7 @@ Activate(Monitor)
         ; Set the new_ position
         DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", new_X, "Int", new_Y, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
         ; Wait some time before the next move
-        Sleep, 10
+        Sleep, 3
     }
     ; Reset the window to the original position
     DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", originalX, "Int", originalY, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10

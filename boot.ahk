@@ -38,8 +38,55 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; return
 
 
-^!+q::
-msgBox test
+; ********************
+; ********************
+; GUI-key pass-through
+; ********************
+; ********************
+
+; my kill lines
+^#k::
+Send {F6}4
+Return
+
+; my paste lines
+^#y::
+Send {F6}5
+Return
+
+; my copy lines
+^#w::
+Send {F6}6
+Return
+
+; my duplicate lines
+^#d::
+Send {F6}7
+Return
+
+; my spell check
+^#0::
+Send {F6}8
+Return
+
+; org store link
+^#s::
+Send {F6}i
+Return
+
+; org insert last stored link
+^#i::
+Send {F6}j
+Return
+
+; org toggle link display
+^#t::
+Send {F6}h
+Return
+
+; org follow link
+^#f::
+Send {F6}t
 Return
 
 
