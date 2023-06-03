@@ -431,7 +431,7 @@ Activate(Monitor)
     originalX := NumGet(rect, 0, "Int")
     originalY := NumGet(rect, 4, "Int")
     ; Constants for the circle movement
-    radius := 3
+    radius := 5
     step := 90  ; Degrees of each step, smaller = smoother
     steps := 360 / step  ; Number of steps for a full circle
     pi := 3.14159

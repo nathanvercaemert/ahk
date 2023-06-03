@@ -85,8 +85,43 @@ Send {F6}h
 Return
 
 ; org follow link
-^#f::
+^#l::
 Send {F6}t
+Return
+
+; counsel find file
+^#f::
+Send {F6}9
+Return
+
+; org-back-to-indentation
+^#m::
+Send {F6}0
+Return
+
+; comment-eclipse
+^#`;::
+Send {F7}a
+Return
+
+; kill word
+^#Delete::
+Send {F7}b
+Return
+
+; counsel-M-x
+^#x::
+Send {F7}c
+Return
+
+; interaction log
+^#h::
+Send {F7}d
+Return
+
+; org-paste-subtree
+^#o::
+Send {F7}e
 Return
 
 
@@ -410,49 +445,6 @@ Return
 Send +{Left}
 Return
 
-PgUp::
-If WinActive("ahk_class ApplicationFrameWindow") ; scroll up a bit (half page) in xodo
-{
-    Loop 6 {
-        Send {Up}
-        Sleep 40
-    }
-    Return
-}
-If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
-{
-    Loop 33 {
-        Send {Up}
-        Sleep 40
-    }
-    Return
-}
-; in Vimium
-Send ^q
-Send e
-Return
-
-PgDn::
-If WinActive("ahk_class ApplicationFrameWindow") ; scroll down a bit (half page) in xodo
-{
-    Loop 6 {
-        Send {Down}
-        Sleep 40
-    }
-    Return
-}
-If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
-{
-    Loop 33 {
-        Send {Down}
-        Sleep 40
-    }
-    Return
-}
-Send ^q ; in vimium
-Send f
-Return
-
 F5::
 Return
 
@@ -518,6 +510,43 @@ Send b
 Return
 
 #If
+
+
+F7::
+Return
+
+#If A_PriorHotkey = "F7"
+
+g::
+If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
+{
+    Loop 33 {
+        Send {Up}
+        Sleep 40
+    }
+    Return
+}
+Send ^q ; in vimium
+Send e
+Return
+
+f::
+If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
+{
+    Loop 33 {
+        Send {Down}
+        Sleep 40
+    }
+    Return
+}
+Send ^q ; in vimium
+Send f
+Return
+
+
+
+#If
+
 
 #IfWinNotActive ahk_class Window Class
 
