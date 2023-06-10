@@ -511,6 +511,7 @@ Return
 
 #If
 
+#IfWinNotActive ahk_class Window Class
 
 F7::
 Return
@@ -624,3 +625,7 @@ Send {PgUp}
 Return
 
 #If
+
+F24::
+SubTopLeft()
+Return
