@@ -83,8 +83,6 @@ UpCenterCenterY := UpCenterMonitorY + UpCenterMonitorHeight / 2
 UpCenterEdgeForgivenessX := UpCenterMonitorX - EdgeForgiveness
 UpCenterEdgeForgivenessY := UpCenterMonitorY - EdgeForgiveness
 
-#Include sub-window-manager.ahk
-
 GetAllWindowIds()
 {
     AllWindowIds := []
@@ -449,6 +447,11 @@ Activate(Monitor)
         if (test_X > test_step || test_Y > test_step) {
             break
         }
+        ; make sure i didn't switch windows while it was wiggling
+        CurrentActiveTest := WinActive("A")
+        if !(CurrentActiveTest = TopWindowIdInMonitor) {
+            break
+        }
         ; convert the step to radians
         rad := A_Index * step * pi / 180
         ; Calculate the new position
@@ -469,8 +472,12 @@ Activate(Monitor)
     test_Y := Abs(originalY - test_Y)
     test_step := step * 4
     if !(test_X > test_step || test_Y > test_step) {
-        ; Reset the window to the original position
-        DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", originalX, "Int", originalY, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+        ; make sure i didn't switch windows while it was wiggling
+        CurrentActiveTest := WinActive("A")
+        if (CurrentActiveTest = TopWindowIdInMonitor) {
+            ; Reset the window to the original position
+            DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", originalX, "Int", originalY, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+        }
     }
 
     ; ActiveWindow := WinActive("A")
@@ -665,6 +672,60 @@ SubTopLeft()
     ActivateSub(SubTopLeftX, SubTopLeftY, SubTopLeftWidth, SubTopLeftHeight)
 }
 
+SubTopRight()
+{
+    CurrentMonitor := GetMonitor()
+    CurrentMonitorName := CurrentMonitor[1]
+    CurrentMonitorX := CurrentMonitor[2]
+    CurrentMonitorY := CurrentMonitor[3]
+    CurrentMonitorWidth := CurrentMonitor[4]
+    CurrentMonitorHeight := CurrentMonitor[5]
+
+    global EdgeForgiveness
+    SubTopRightWidth := CurrentMonitorWidth / 2
+    SubTopRightHeight := CurrentMonitorHeight / 2
+    SubTopRightX := CurrentMonitorX - EdgeForgiveness + SubTopRightWidth
+    SubTopRightY := CurrentMonitorY - EdgeForgiveness
+
+    ActivateSub(SubTopRightX, SubTopRightY, SubTopRightWidth, SubTopRightHeight)
+}
+
+SubBottomLeft()
+{
+    CurrentMonitor := GetMonitor()
+    CurrentMonitorName := CurrentMonitor[1]
+    CurrentMonitorX := CurrentMonitor[2]
+    CurrentMonitorY := CurrentMonitor[3]
+    CurrentMonitorWidth := CurrentMonitor[4]
+    CurrentMonitorHeight := CurrentMonitor[5]
+
+    global EdgeForgiveness
+    SubBottomLeftWidth := CurrentMonitorWidth / 2
+    SubBottomLeftHeight := CurrentMonitorHeight / 2
+    SubBottomLeftX := CurrentMonitorX - EdgeForgiveness
+    SubBottomLeftY := CurrentMonitorY - EdgeForgiveness + SubBottomLeftHeight
+
+    ActivateSub(SubBottomLeftX, SubBottomLeftY, SubBottomLeftWidth, SubBottomLeftHeight)
+}
+
+SubBottomRight()
+{
+    CurrentMonitor := GetMonitor()
+    CurrentMonitorName := CurrentMonitor[1]
+    CurrentMonitorX := CurrentMonitor[2]
+    CurrentMonitorY := CurrentMonitor[3]
+    CurrentMonitorWidth := CurrentMonitor[4]
+    CurrentMonitorHeight := CurrentMonitor[5]
+
+    global EdgeForgiveness
+    SubBottomRightWidth := CurrentMonitorWidth / 2
+    SubBottomRightHeight := CurrentMonitorHeight / 2
+    SubBottomRightX := CurrentMonitorX - EdgeForgiveness + SubBottomRightWidth
+    SubBottomRightY := CurrentMonitorY - EdgeForgiveness + SubBottomRightHeight
+
+    ActivateSub(SubBottomRightX, SubBottomRightY, SubBottomRightWidth, SubBottomRightHeight)
+}
+
 ActivateSub(MonitorX, MonitorY, MonitorWidth, MonitorHeight)
 {
     ; *********************************************************************************
@@ -734,6 +795,69 @@ ActivateSub(MonitorX, MonitorY, MonitorWidth, MonitorHeight)
     if !(test_X > test_step || test_Y > test_step) {
         ; Reset the window to the original position
         DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", originalX, "Int", originalY, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+    }
+
+    ; this code was taken verbatim from ActivateSub(MonitorX, MonitorY, MonitorWidth, MonitorHeight)
+    ;*******
+    ;*******
+    ; Wiggle
+    ;*******
+    ;*******
+    ; Get the original position of the window
+    VarSetCapacity(rect, 16)
+    DllCall("GetWindowRect", "Ptr", TopWindowIdInMonitor, "Ptr", &rect)
+    originalX := NumGet(rect, 0, "Int")
+    originalY := NumGet(rect, 4, "Int")
+    ; Constants for the circle movement
+    radius := 5
+    step := 90  ; Degrees of each step, smaller = smoother
+    steps := 360 / step  ; Number of steps for a full circle
+    pi := 3.14159
+    ; Perform the circular movement
+    Loop % steps
+    {
+        ; make sure i didn't move the window while it was wiggling
+        VarSetCapacity(rect_test, 16)
+        DllCall("GetWindowRect", "Ptr", TopWindowIdInMonitor, "Ptr", &rect_test)
+        test_X := NumGet(rect_test, 0, "Int")
+        test_Y := NumGet(rect_test, 4, "Int")
+        test_X := Abs(originalX - test_X)
+        test_Y := Abs(originalY - test_Y)
+        test_step := step * 4
+        if (test_X > test_step || test_Y > test_step) {
+            break
+        }
+        ; make sure i didn't switch windows while it was wiggling
+        CurrentActiveTest := WinActive("A")
+        if !(CurrentActiveTest = TopWindowIdInMonitor) {
+            break
+        }
+        ; convert the step to radians
+        rad := A_Index * step * pi / 180
+        ; Calculate the new position
+        new_X := originalX + radius * Cos(rad)
+        new_Y := originalY + radius * Sin(rad)
+        ; Set the new_ position
+        DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", new_X, "Int", new_Y, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+        ; Wait some time before the next move
+        Sleep, 3
+    }
+    ; (this duplicate code should be collapsed)
+    ; make sure i didn't move the window while it was wiggling
+    VarSetCapacity(rect_test, 16)
+    DllCall("GetWindowRect", "Ptr", TopWindowIdInMonitor, "Ptr", &rect_test)
+    test_X := NumGet(rect_test, 0, "Int")
+    test_Y := NumGet(rect_test, 4, "Int")
+    test_X := Abs(originalX - test_X)
+    test_Y := Abs(originalY - test_Y)
+    test_step := step * 4
+    if !(test_X > test_step || test_Y > test_step) {
+        ; make sure i didn't switch windows while it was wiggling
+        CurrentActiveTest := WinActive("A")
+        if (CurrentActiveTest = TopWindowIdInMonitor) {
+            ; Reset the window to the original position
+            DllCall("SetWindowPos", "Ptr", TopWindowIdInMonitor, "Ptr", 0, "Int", originalX, "Int", originalY, "Int", 0, "Int", 0, "UInt", 0x15)  ; SWP_NOZORDER = 0x4 | SWP_NOSIZE = 0x1 | SWP_NOACTIVATE = 0x10
+        }
     }
 
 }

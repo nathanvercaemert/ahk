@@ -629,3 +629,15 @@ Return
 F24::
 SubTopLeft()
 Return
+
+F23::
+SubTopRight()
+Return
+
+F22::
+SubBottomLeft()
+Return
+
+F21::
+SubBottomRight()
+Return
