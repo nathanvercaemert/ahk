@@ -45,7 +45,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; ********************
 
 ; my kill lines
-^#k::
+^#w::
 Send {F6}4
 Return
 
@@ -55,7 +55,7 @@ Send {F6}5
 Return
 
 ; my copy lines
-^#w::
+^#k::
 Send {F6}6
 Return
 
