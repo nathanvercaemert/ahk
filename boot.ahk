@@ -6,6 +6,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include ./VD.ahk/VD.ahk ; virtual desktop submodule (has different header requirements if I ever use more funcitonality)
 #Include window-manager.ahk
 
+WasF8 := false
+WasValidF8 := false
 
 ; ************
 ; ************
@@ -353,7 +355,7 @@ Return
 ; this is a hack to fix the issue where pasting into alacritty
 ; (using the alacritty paste functionality bound to MEH(PgDn) (bound to lmd+rpu))
 ; causes windows line endings to be represented as two line feeds
-^+!PgDn::
+F16::
 ClipboardBackup := Clipboard                        ; To restore clipboard contents after paste
 FixString := StrReplace(Clipboard, "`r")            ; Change endings
 Clipboard := FixString                              ; Set to clipboard
@@ -641,3 +643,7 @@ Return
 F21::
 SubBottomRight()
 Return
+
+; #If A_PriorHotkey = "F8"
+
+; a::
