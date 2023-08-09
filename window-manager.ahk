@@ -95,7 +95,7 @@ GetAllWindowIds()
     return AllWindowIds
 }
 
-FilterWindowIds(AllWindowIds)
+Filter_WindowIds(All_WindowIds)
 {
 
     ; ; for finding names to blacklist:
@@ -104,7 +104,7 @@ FilterWindowIds(AllWindowIds)
     ; ; add to blacklist above
     ; ;
     ; Output := ""
-    ; for Index, WindowId in AllWindowIds
+    ; for Index, WindowId in All_WindowIds
     ; {
     ;     Id := WindowId
     ;     WinGetTitle Title, ahk_id %Id%
@@ -118,7 +118,7 @@ FilterWindowIds(AllWindowIds)
     CurrentActiveDesktop := VD.getCurrentDesktopNum()
 
     FilteredWindowIds := []
-    for Index, WindowId in AllWindowIds
+    for Index, WindowId in All_WindowIds
     {
         Id := WindowId
         WinGetTitle Title, ahk_id %Id%
@@ -135,23 +135,6 @@ FilterWindowIds(AllWindowIds)
             if (CurrentActiveDesktop != WindowDesktop) {
                 continue
             } 
-            FilteredWindowIds.Push(WindowId)
-        }
-    }
-    return FilteredWindowIds
-
-}
-
-FilterWow(AllWindowIds)
-{
-    FilteredWindowIds := []
-    for Index, WindowId in AllWindowIds
-    {
-        Id := WindowId
-        WinGetTitle Title, ahk_id %Id%
-        WinGetClass Class, ahk_id %Id%
-        WinGetPos, Xpos, Ypos, W, H, ahk_id %Id%
-        if (Title == "World of Warcraft") {
             FilteredWindowIds.Push(WindowId)
         }
     }
@@ -409,7 +392,7 @@ Activate(Monitor)
 
     AllWindowIds := GetAllWindowIds()
 
-    FilteredWindowIds := FilterWindowIds(AllWindowIds)
+    FilteredWindowIds := Filter_WindowIds(AllWindowIds)
 
     ; these are retrieved in the order in which they
     ; stack - index 0 is top (and ahk is 1-indexed)
@@ -482,17 +465,6 @@ Activate(Monitor)
 
     ; ActiveWindow := WinActive("A")
     ; DllCall("FlashWindow", UInt, ActiveWindow, Int, True)
-}
-
-ActivateWow()
-{
-    AllWindowIds := GetAllWindowIds()
-
-    FilteredWindowIds := FilterWow(AllWindowIds)
-
-    Wow := FilteredWindowIds[1]
-
-    WinActivate, ahk_id %Wow%
 }
 
 MoveTo(Monitor)
@@ -736,7 +708,7 @@ ActivateSub(MonitorX, MonitorY, MonitorWidth, MonitorHeight)
 
     AllWindowIds := GetAllWindowIds()
 
-    FilteredWindowIds := FilterWindowIds(AllWindowIds)
+    FilteredWindowIds := Filter_WindowIds(AllWindowIds)
 
     ; these are retrieved in the order in which they stack - index 0 is top (and ahk is 1-indexed)
     WindowIdsInMonitor := GetWindowIdsInMonitor(FilteredWindowIds, MonitorX, MonitorY, MonitorWidth, MonitorHeight)

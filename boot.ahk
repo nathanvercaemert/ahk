@@ -7,7 +7,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include window-manager.ahk
 
 WasF8 := false
-WasValidF8 := false
 
 ; ************
 ; ************
@@ -248,36 +247,6 @@ Cycle()
 Return
 
 
-; ************
-; ************
-; WOW ********
-; ************
-; ************
-
-^!#7::
-ActivateWow()
-Return
-
-#IfWinActive ahk_class GxWindowClass
-
-!+F1::
-Send !+{F1}
-MouseToActiveWindow()
-Return
-
-!7::
-Send !7
-MouseToActiveWindow()
-Return
-
-!8::
-Send !8
-MouseToActiveWindow()
-Return
-
-#If
-
-
 ; *****************************
 ; *****************************
 ; Make The Hyper Key Do Nothing
@@ -454,10 +423,6 @@ Return
 Return
 
 #If A_PriorHotkey = "F5"
-
-c::
-Send ^w
-Return
 
 4::
 Send ^z
@@ -644,6 +609,27 @@ F21::
 SubBottomRight()
 Return
 
-; #If A_PriorHotkey = "F8"
+#If
 
-; a::
+~F8::
+Return
+
+#If
+#If A_PriorHotkey = "~F8"
+
+a::
+If ((!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class CabinetWClass"))) {
+    Send a
+}
+Return
+
+#If
+#If A_PriorHotkey = "a"
+
+c::
+If (WinActive("ahk_class Chrome_WidgetWin_1") or WinActive("ahk_class CabinetWClass")) {
+    Send ^w
+} Else {
+    Send c
+}
+Return
