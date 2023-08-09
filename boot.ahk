@@ -8,6 +8,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 WasF8 := false
 
+ResetWasF8:
+    WasF8 = true
+    Return
+
 ; ************
 ; ************
 ; Idle *******
@@ -621,13 +625,14 @@ a::
 If ((!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class CabinetWClass"))) {
     Send a
 }
+SetTimer, ResetWasF8, 500
 Return
 
 #If
 #If A_PriorHotkey = "a"
 
 c::
-If (WinActive("ahk_class Chrome_WidgetWin_1") or WinActive("ahk_class CabinetWClass")) {
+If (WasF8 and (WinActive("ahk_class Chrome_WidgetWin_1") or WinActive("ahk_class CabinetWClass"))) {
     Send ^w
 } Else {
     Send c
