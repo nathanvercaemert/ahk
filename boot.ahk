@@ -7,10 +7,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include window-manager.ahk
 
 WasF8 := false
-
-ResetWasF8:
-    WasF8 = true
+ResetWasF8() {
+    global WasF8
+    WasF8 = false
     Return
+}
 
 ; ************
 ; ************
@@ -624,8 +625,10 @@ Return
 a::
 If ((!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class CabinetWClass"))) {
     Send a
+} Else {
+    WasF8 = true;
+    SetTimer, ResetWasF8, 30
 }
-SetTimer, ResetWasF8, 500
 Return
 
 #If
