@@ -131,39 +131,6 @@ Send {F7}e
 Return
 
 
-; **********
-; **********
-; AHK Prefix
-; **********
-; **********
-
-F19::
-Return
-
-#If A_PriorHotkey = "F19"
-
-; basic emacs alacritty run command (Win+r)
-w::
-Send alacritty --config-file C:\\Users\\nverc\\AppData\\Roaming\\alacritty\\alacritty.yml -e wsl -d Ubuntu --user vercaemert emacsclient -nw
-Return
-
-; retart boot.ahk
-b::
-Run C:\\Users\nverc\OneDrive\Documents\etc\ahk\boot.ahk
-Return
-
-d::
-Send alacritty --config-file C:\Users\nverc\AppData\Roaming\alacritty\alacritty.yml -e docker exec -it vercaemert env TERM=xterm-256color emacsclient -nw
-Return
-
-; test
-t::
-MsgBox test
-Return
-
-#If
-
-
 ; *****************
 ; *****************
 ; Window Management
