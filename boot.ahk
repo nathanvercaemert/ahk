@@ -585,7 +585,7 @@ Return
 #If A_PriorHotkey = "~F8"
 
 a::
-If ((!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class CabinetWClass"))) {
+If ((A_PriorHotkey = "~F8") and (!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class CabinetWClass"))) {
     Send a
 } Else {
     WasF8 = true;
