@@ -438,40 +438,6 @@ Send ^q
 Send a
 Return
 
-w::
-If WinActive("ahk_class ApplicationFrameWindow") ; scroll down "1" in xodo
-{
-    Send {Down}
-    Return
-}
-If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
-{
-    Loop 3 {
-        Send {Down}
-    }
-    Return
-}
-Send ^q ; in vimium
-Send c
-Return
-
-v::
-If WinActive("ahk_class ApplicationFrameWindow") ; scroll up "1" in xodo
-{
-    Send {Up}
-    Return
-}
-If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
-{
-    Loop 3 {
-        Send {Up}
-    }
-    Return
-}
-Send ^q ; in vimium
-Send d
-Return
-
 #If
 
 #If A_PriorHotkey = "^F5"
@@ -499,8 +465,7 @@ If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
     }
     Return
 }
-Send ^q ; in vimium
-Send e
+Send ^qe ; in vimium
 Return
 
 f::
@@ -512,11 +477,8 @@ If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
     }
     Return
 }
-Send ^q ; in vimium
-Send f
+Send ^qf ; in vimium
 Return
-
-
 
 #If
 
@@ -627,7 +589,7 @@ If ((!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class Cabi
     Send a
 } Else {
     WasF8 = true;
-    SetTimer, ResetWasF8, 30
+    SetTimer, ResetWasF8, 50
 }
 Return
 
