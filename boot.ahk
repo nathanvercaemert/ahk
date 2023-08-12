@@ -7,11 +7,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include window-manager.ahk
 
 WasF8 := false
-ResetWasF8() {
-    global WasF8
-    WasF8 = false
-    Return
-}
 
 ; ************
 ; ************
@@ -42,7 +37,6 @@ ResetWasF8() {
 ; }
 ; KeepWinZRunning := false   
 ; return
-
 
 ; ********************
 ; ********************
@@ -416,39 +410,41 @@ Return
 
 #If
 
-#IfWinNotActive ahk_class Window Class
-
-F7::
-Return
-
-#If A_PriorHotkey = "F7"
-
-g::
-If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
-{
-    Loop 33 {
-        Send {Up}
-        Sleep 40
+$g::
+If (A_PriorKey = "F7") {
+    If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
+        Send ^q
+        Send {Text}g
     }
-    Return
-}
-Send ^qe ; in vimium
-Return
-
-f::
-If WinActive("ahk_class AcrobatSDIWindow") ; in adobe
-{
-    Loop 33 {
-        Send {Down}
-        Sleep 40
+    If WinActive("ahk_class AcrobatSDIWindow") ; adobe
+    {
+        Loop 33 {
+            Send {Up}
+            Sleep 40
+        }
     }
-    Return
+} Else {
+    Send g
 }
-Send ^qf ; in vimium
 Return
 
-#If
-
+$f::
+If (A_PriorKey = "F7") {
+    If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
+        Send ^q
+        Send {Text}f
+    }
+    If WinActive("ahk_class AcrobatSDIWindow") ; adobe
+    {
+        Loop 33 {
+            Send {Down}
+            Sleep 40
+        }
+    }
+} Else {
+    Send f
+}
+Return
 
 #IfWinNotActive ahk_class Window Class
 
@@ -545,28 +541,32 @@ Return
 
 #If
 
-~F8::
-Return
+;F8stuff
 
-#If
-#If A_PriorHotkey = "~F8"
-
-a::
-If ((A_PriorHotkey = "~F8") and (!WinActive("ahk_class Chrome_WidgetWin_1")) and (!WinActive("ahk_class CabinetWClass"))) {
-    Send a
-} Else {
-    WasF8 = true;
+$a::
+If (A_PriorKey = "F8") {
+    WasF8 := true
     SetTimer, ResetWasF8, 50
+    If (!(WinActive("ahk_class Chrome_WidgetWin_1")) && !(WinActive("ahk_class CabinetWClass"))) {
+        Send a
+    }
+} Else {
+    Send a
 }
 Return
 
-#If
-#If A_PriorHotkey = "a"
-
-c::
-If (WasF8 and (WinActive("ahk_class Chrome_WidgetWin_1") or WinActive("ahk_class CabinetWClass"))) {
-    Send ^w
+$c::
+If (WasF8 && (A_PriorHotkey = "$a")) {
+    If (WinActive("ahk_class Chrome_WidgetWin_1") || WinActive("ahk_class CabinetWClass")) {
+        Send ^w
+    } Else {
+        Send c
+    }
 } Else {
     Send c
 }
 Return
+
+ResetWasF8:
+    WasF8 := false
+    Return
