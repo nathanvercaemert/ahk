@@ -415,13 +415,13 @@ If (A_PriorKey = "F7") {
     If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
         Send ^q
         Send {Text}g
-    }
-    If WinActive("ahk_class AcrobatSDIWindow") ; adobe
-    {
+    } Else If WinActive("ahk_class AcrobatSDIWindow") { ; adobe
         Loop 33 {
             Send {Up}
             Sleep 40
         }
+    } Else {
+        Send g
     }
 } Else {
     Send g
@@ -433,13 +433,13 @@ If (A_PriorKey = "F7") {
     If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
         Send ^q
         Send {Text}f
-    }
-    If WinActive("ahk_class AcrobatSDIWindow") ; adobe
-    {
+    } Else If WinActive("ahk_class AcrobatSDIWindow") { ; adobe
         Loop 33 {
             Send {Down}
             Sleep 40
         }
+    } Else {
+        Send f
     }
 } Else {
     Send f
