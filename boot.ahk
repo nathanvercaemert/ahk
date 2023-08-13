@@ -6,7 +6,26 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include ./VD.ahk/VD.ahk ; virtual desktop submodule (has different header requirements if I ever use more funcitonality)
 #Include window-manager.ahk
 
-WasF8 := false
+WasF8 := False
+WasA := False
+WasAA := False
+WasAB := False
+WasAC := False
+WasAD := False
+WasAE := False
+ResetF8() {
+    global WasF8, WasA, WasAA, WasAB, WasAC, WasAD, WasAE
+    WasF8 := False
+    WasA := False
+    WasAA := False
+    WasAB := False
+    WasAC := False
+    WasAD := False
+    WasAE := False
+    While (!WasAA && !WasAB && !WasAC && !WasAD && !WasAE) {
+    }
+    ResetF8()
+}
 
 ; ************
 ; ************
@@ -37,6 +56,10 @@ WasF8 := false
 ; }
 ; KeepWinZRunning := false   
 ; return
+
+
+ResetF8()
+
 
 ; ********************
 ; ********************
@@ -481,29 +504,21 @@ Return
 ; forward word
 !f::
 Send ^{Right}
-Send ^{Right}
-Send ^{Left}
 Return
 
 ; shift forward word
 +!f::
 Send +^{Right}
-Send +^{Right}
-Send ^+{Left}
 Return
 
 ; backward word
 !b::
 Send ^{Left}
-Send ^{Left}
-Send ^{Right}
 Return
 
 ; shift backward word
 !+b::
 Send ^+{Left}
-Send ^+{Left}
-Send ^+{Right}
 Return
 
 ; kill backward word
@@ -541,32 +556,71 @@ Return
 
 #If
 
-;F8stuff
+; F7::
+; MsgBox %A_PriorKey%, %A_PriorHotkey%
+; Return
 
 $a::
+Critical
 If (A_PriorKey = "F8") {
-    WasF8 := true
-    SetTimer, ResetWasF8, 50
+    If (A_PriorHotkey = "$a") {
+        Send a
+        WasAA := True
+        Return
+    } Else {
+        WasF8 := True
+    }
+}
+If (WasF8) {
     If (!(WinActive("ahk_class Chrome_WidgetWin_1")) && !(WinActive("ahk_class CabinetWClass"))) {
         Send a
     }
+    WasA := True
 } Else {
     Send a
 }
 Return
 
+$b::
+Critical
+If (WasA) {
+    Send b
+    WasAB := true
+} Else {
+    Send b
+}
+Return
+
 $c::
-If (WasF8 && (A_PriorHotkey = "$a")) {
+Critical
+If (WasA) {
     If (WinActive("ahk_class Chrome_WidgetWin_1") || WinActive("ahk_class CabinetWClass")) {
         Send ^w
     } Else {
         Send c
     }
+    WasAC := True
 } Else {
     Send c
 }
 Return
 
-ResetWasF8:
-    WasF8 := false
-    Return
+$d::
+Critical
+If (WasA) {
+    Send d
+    WasAD := true
+} Else {
+    Send d
+}
+Return
+
+$e::
+Critical
+If (WasA) {
+    Send e
+    WasAE := true
+} Else {
+    Send e
+}
+Return
