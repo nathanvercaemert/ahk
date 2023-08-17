@@ -29,36 +29,48 @@ ResetF8() {
 
 ; ************
 ; ************
+; Idle Setup *
+; ************
+; ************
+
+KeepWinZRunning := True
+#MaxThreadsPerHotkey 3
+
+
+; ************
+; ************
+; Reset F8 ***
+; ************
+; ************
+
+ResetF8()
+
+
+; ************
+; ************
 ; Idle *******
 ; ************
 ; ************
 
-; KeepWinZRunning := true
-; #MaxThreadsPerHotkey 3
-; #z::  
-; #MaxThreadsPerHotkey 1
-; if KeepWinZRunning  
-; {
-;     KeepWinZRunning := false  
-;     return  
-; } else
-; {
-;     KeepWinZRunning := true
-; }
-; Loop
-; {
-;     Sleep 1000
-;     Send {F19}
-;     Sleep 1000
-;     Send {F19}
-;     if not KeepWinZRunning  
-;         break  
-; }
-; KeepWinZRunning := false   
-; return
-
-
-ResetF8()
+#z::  
+#MaxThreadsPerHotkey 1
+If KeepWinZRunning  
+{
+    KeepWinZRunning := False
+    Return  
+} Else
+{
+    KeepWinZRunning := True
+}
+Loop
+{
+    Sleep 1000
+    MouseMove 500, 500
+    If Not KeepWinZRunning  
+        Break  
+}
+KeepWinZRunning := False
+Return
 
 
 ; ********************
@@ -433,8 +445,12 @@ Return
 
 #If
 
+$F7::
+Send {F7}
+Return
+
 $g::
-If (A_PriorKey = "F7") {
+If (A_PriorHotkey = "$F7") {
     If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
         Send ^q
         Send {Text}g
@@ -452,7 +468,7 @@ If (A_PriorKey = "F7") {
 Return
 
 $f::
-If (A_PriorKey = "F7") {
+If (A_PriorHotkey = "$F7") {
     If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
         Send ^q
         Send {Text}f
@@ -556,23 +572,24 @@ Return
 
 #If
 
-; F7::
-; MsgBox %A_PriorKey%, %A_PriorHotkey%
-; Return
+
+
+
+;F8 Stuff
+
+$F8::
+Critical
+Send {F8}
+WasF8 := True
+Return
 
 $a::
 Critical
-If (A_PriorKey = "F8") {
+If (WasF8) {
     If (A_PriorHotkey = "$a") {
         Send a
         WasAA := True
-        Return
-    } Else {
-        WasF8 := True
-    }
-}
-If (WasF8) {
-    If (!(WinActive("ahk_class Chrome_WidgetWin_1")) && !(WinActive("ahk_class CabinetWClass"))) {
+    } Else If (!(WinActive("ahk_class Chrome_WidgetWin_1")) && !(WinActive("ahk_class CabinetWClass"))) {
         Send a
     }
     WasA := True
