@@ -219,6 +219,10 @@ Return
 Activate("Left")
 Return
 
+^!#L::
+Activate("BottomRight")
+Return
+
 ^!#F::
 MoveTo("Middle")
 Return
@@ -231,6 +235,10 @@ Return
 MoveTo("Left")
 Return
 
+^!#R::
+MoveTo("BottomRight")
+Return
+
 ^!#J::
 SwapWith("Middle")
 Return
@@ -241,6 +249,10 @@ Return
 
 ^!#1::
 SwapWith("Left")
+Return
+
+^!#Z::
+SwapWith("BottomRight")
 Return
 
 ^!#0::
