@@ -751,3 +751,8 @@ $z::
 Critical
 CorrectCapitalization("z")
 Return
+
+$Space::
+Critical
+Send {Space}
+Return
