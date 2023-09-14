@@ -3,6 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, Force ; skips the startup (on re-run) dialog box and replaces the old instance automatically
+#MaxThreadsPerHotkey 3
 #Include ./VD.ahk/VD.ahk ; virtual desktop submodule (has different header requirements if I ever use more funcitonality)
 #Include window-manager.ahk
 
@@ -13,8 +14,9 @@ WasAB := False
 WasAC := False
 WasAD := False
 WasAE := False
+WasAF := False
 ResetF8() {
-    global WasF8, WasA, WasAA, WasAB, WasAC, WasAD, WasAE
+    global WasF8, WasA, WasAA, WasAB, WasAC, WasAD, WasAE, WasAF
     WasF8 := False
     WasA := False
     WasAA := False
@@ -22,7 +24,8 @@ ResetF8() {
     WasAC := False
     WasAD := False
     WasAE := False
-    While (!WasAA && !WasAB && !WasAC && !WasAD && !WasAE) {
+    WasAF := False
+    While (!WasAA && !WasAB && !WasAC && !WasAD && !WasAE && !WasAF) {
     }
     ResetF8()
 }
@@ -34,7 +37,6 @@ ResetF8() {
 ; ************
 
 KeepWinZRunning := True
-#MaxThreadsPerHotkey 3
 
 
 ; ************
@@ -467,24 +469,6 @@ If (A_PriorHotkey = "$F7") {
 }
 Return
 
-$f::
-If (A_PriorHotkey = "$F7") {
-    If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
-        Send ^q
-        Send {Text}f
-    } Else If WinActive("ahk_class AcrobatSDIWindow") { ; adobe
-        Loop 33 {
-            Send {Down}
-            Sleep 40
-        }
-    } Else {
-        Send f
-    }
-} Else {
-    Send f
-}
-Return
-
 #IfWinNotActive ahk_class Window Class
 
 ^x::
@@ -602,7 +586,7 @@ $b::
 Critical
 If (WasA) {
     Send b
-    WasAB := true
+    WasAB := True
 } Else {
     Send b
 }
@@ -626,7 +610,7 @@ $d::
 Critical
 If (WasA) {
     Send d
-    WasAD := true
+    WasAD := True
 } Else {
     Send d
 }
@@ -636,8 +620,29 @@ $e::
 Critical
 If (WasA) {
     Send e
-    WasAE := true
+    WasAE := True
 } Else {
     Send e
+}
+Return
+
+$f::
+If (A_PriorHotkey = "$F7") {
+    If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
+        Send ^q
+        Send {Text}f
+    } Else If WinActive("ahk_class AcrobatSDIWindow") { ; adobe
+        Loop 33 {
+            Send {Down}
+            Sleep 40
+        }
+    } Else {
+        Send f
+    }
+} Else If (WasA) {
+    Send f
+    WasAF := True
+} Else {
+    Send f
 }
 Return
