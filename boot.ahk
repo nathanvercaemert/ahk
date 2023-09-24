@@ -7,6 +7,14 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include ./VD.ahk/VD.ahk ; virtual desktop submodule (has different header requirements if I ever use more funcitonality)
 #Include window-manager.ahk
 
+CorrectCapitalization(Key) {
+    If (GetKeyState("Capslock", "T") && !GetKeyState("Shift")) {
+        Send {Shift Down}%Key%{Shift Up}
+    } Else {
+        Send %Key%
+    }
+}
+
 WasF8 := False
 WasA := False
 WasAA := False
@@ -66,8 +74,8 @@ If KeepWinZRunning
 }
 Loop
 {
-    Sleep 1000
     MouseMove 500, 500
+    Sleep 1000
     If Not KeepWinZRunning  
         Break  
 }
@@ -221,6 +229,10 @@ Return
 Activate("Left")
 Return
 
+^!#L::
+Activate("BottomRight")
+Return
+
 ^!#F::
 MoveTo("Middle")
 Return
@@ -233,6 +245,10 @@ Return
 MoveTo("Left")
 Return
 
+^!#R::
+MoveTo("BottomRight")
+Return
+
 ^!#J::
 SwapWith("Middle")
 Return
@@ -243,6 +259,10 @@ Return
 
 ^!#1::
 SwapWith("Left")
+Return
+
+^!#Z::
+SwapWith("BottomRight")
 Return
 
 ^!#0::
@@ -451,24 +471,6 @@ $F7::
 Send {F7}
 Return
 
-$g::
-If (A_PriorHotkey = "$F7") {
-    If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
-        Send ^q
-        Send {Text}g
-    } Else If WinActive("ahk_class AcrobatSDIWindow") { ; adobe
-        Loop 33 {
-            Send {Up}
-            Sleep 40
-        }
-    } Else {
-        Send g
-    }
-} Else {
-    Send g
-}
-Return
-
 #IfWinNotActive ahk_class Window Class
 
 ^x::
@@ -485,7 +487,6 @@ Send ^n
 Return
 
 ^c::
-Send !{F4}
 Return
 
 ^s::
@@ -556,11 +557,6 @@ Return
 
 #If
 
-
-
-
-;F8 Stuff
-
 $F8::
 Critical
 Send {F8}
@@ -578,7 +574,7 @@ If (WasF8) {
     }
     WasA := True
 } Else {
-    Send a
+    CorrectCapitalization("a")
 }
 Return
 
@@ -588,7 +584,7 @@ If (WasA) {
     Send b
     WasAB := True
 } Else {
-    Send b
+    CorrectCapitalization("b")
 }
 Return
 
@@ -602,7 +598,7 @@ If (WasA) {
     }
     WasAC := True
 } Else {
-    Send c
+    CorrectCapitalization("c")
 }
 Return
 
@@ -612,7 +608,7 @@ If (WasA) {
     Send d
     WasAD := True
 } Else {
-    Send d
+    CorrectCapitalization("d")
 }
 Return
 
@@ -622,7 +618,7 @@ If (WasA) {
     Send e
     WasAE := True
 } Else {
-    Send e
+    CorrectCapitalization("e")
 }
 Return
 
@@ -639,10 +635,125 @@ If (A_PriorHotkey = "$F7") {
     } Else {
         Send f
     }
-} Else If (WasA) {
-    Send f
-    WasAF := True
 } Else {
-    Send f
+    CorrectCapitalization("f")
 }
+Return
+
+$g::
+If (A_PriorHotkey = "$F7") {
+    If (WinActive("ahk_class Chrome_WidgetWin_1")) { ; vimium
+        Send ^q
+        Send {Text}g
+    } Else If WinActive("ahk_class AcrobatSDIWindow") { ; adobe
+        Loop 33 {
+            Send {Up}
+            Sleep 40
+        }
+    } Else {
+        Send g
+    }
+} Else {
+    CorrectCapitalization("g")
+}
+Return
+
+$h::
+Critical
+CorrectCapitalization("h")
+Return
+
+$i::
+Critical
+CorrectCapitalization("i")
+Return
+
+$j::
+Critical
+CorrectCapitalization("j")
+Return
+
+$k::
+Critical
+CorrectCapitalization("k")
+Return
+
+$l::
+Critical
+CorrectCapitalization("l")
+Return
+
+$m::
+Critical
+CorrectCapitalization("m")
+Return
+
+$n::
+Critical
+CorrectCapitalization("n")
+Return
+
+$o::
+Critical
+CorrectCapitalization("o")
+Return
+
+$p::
+Critical
+CorrectCapitalization("p")
+Return
+
+$q::
+Critical
+CorrectCapitalization("q")
+Return
+
+$r::
+Critical
+CorrectCapitalization("r")
+Return
+
+$s::
+Critical
+CorrectCapitalization("s")
+Return
+
+$t::
+Critical
+CorrectCapitalization("t")
+Return
+
+$u::
+Critical
+CorrectCapitalization("u")
+Return
+
+$v::
+Critical
+CorrectCapitalization("v")
+Return
+
+$w::
+Critical
+CorrectCapitalization("w")
+Return
+
+$x::
+Critical
+CorrectCapitalization("x")
+Return
+
+$y::
+Critical
+CorrectCapitalization("y")
+Return
+
+$z::
+Critical
+CorrectCapitalization("z")
+Return
+
+$Space::
+Critical
+Send {Space}
 Return

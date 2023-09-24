@@ -20,10 +20,10 @@ MiddleCenterY := MiddleMonitorY + MiddleMonitorHeight / 2
 EdgeForgivenessX := MiddleMonitorX - EdgeForgiveness
 EdgeForgivenessY := MiddleMonitorY - EdgeForgiveness
 
-BottomRightMonitorX := ScreenWidth + ScreenWidth
-BottomRightMonitorY := 0
-BottomRightMonitorWidth := 2560
-BottomRightMonitorHeight := 1600
+BottomRightMonitorX := ScreenWidth
+BottomRightMonitorY := ScreenHeight
+BottomRightMonitorWidth := 1920
+BottomRightMonitorHeight := 1080
 BottomRightCenterX := BottomRightMonitorX + BottomRightMonitorWidth / 2
 BottomRightCenterY := BottomRightMonitorY + BottomRightMonitorHeight / 2
 BottomRightEdgeForgivenessX := BottomRightMonitorX - EdgeForgiveness
