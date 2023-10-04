@@ -74,8 +74,14 @@ If KeepWinZRunning
 }
 Loop
 {
+    MouseMove 500, 501
+    Sleep, 10
+    MouseMove 501, 501
+    Sleep, 10
+    MouseMove 501, 500
+    Sleep, 10
     MouseMove 500, 500
-    Sleep 1000
+    Sleep, 10
     If Not KeepWinZRunning  
         Break  
 }
